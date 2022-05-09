@@ -11,6 +11,19 @@ Repositorio pruebas Kraken.
 
 Funcionalidades y escenarios:
 
+  - Ingresar a la aplicacion:
+      - Login exitoso y Logout
+      - Login erroneo por password incorrecto
+      - Login erroneo por username inexistente en DB
+  - Administración Post
+      - Listar Post
+      - Crear post sin publicar
+      - Crear post y publicar
+      - Crear post y publicar 2 minutos después
+      - Actualizar un post
+      - Crear un post y eliminar el post
+      - Crear post, publicar y quitar publicación.
+
 
 
 
