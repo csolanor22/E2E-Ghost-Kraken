@@ -28,9 +28,5 @@ Scenario: Crear post y delete post
     And I wait for 2 seconds
     And I click on confirm delete post
     And I wait for 4 seconds
-    And I click on User menu
-    And I wait for 1 seconds
-    And I click Sing Out
-    And I wait for 2 seconds
     And I navigate to page "http://localhost:2368"
     Then I wait for 2 seconds
