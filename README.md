@@ -10,7 +10,7 @@
 Repositorio pruebas Kraken.
 
 Funcionalidades y escenarios:
-  - Crear usuario Administrador
+  - Crear usuario Administrador (para ejecutar de forma exitosa las pruebas relacionadas a esta funcionalidad se debe tener una instalación "limpia" de Ghost, es decir sin ningún usuario administrador creado previamente)
       - Crear un nuevo usuario administrador de forma exitosa
       - Crear un usuario administrador de forma no exitosa con una clave corta
       - Crear un usuario administrador de forma no exitosa con una clave insegura
