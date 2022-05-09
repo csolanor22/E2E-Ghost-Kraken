@@ -37,3 +37,5 @@ Intrucciones para ejecutar las pruebas creadas con Kraken:
   - Desde la console entre a la carpeta creada al clonar el repositorio
   - Dentro de la carpeta raíz del proyecto ejecute el comando npm install
   - Puede usar el comando `npx kraken-node run` ó `kraken-node run` para correr las pruebas
+
+Repositorio de pruebas E2E con Cypress: https://github.com/aforero31/E2E-Ghosh-Cypress
