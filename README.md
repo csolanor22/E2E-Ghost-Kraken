@@ -10,7 +10,12 @@
 Repositorio pruebas Kraken.
 
 Funcionalidades y escenarios:
-
+  - Crear usuario Administrador
+      - Crear un nuevo usuario administrador de forma exitosa
+      - Crear un usuario administrador de forma no exitosa con una clave corta
+      - Crear un usuario administrador de forma no exitosa con una clave insegura
+      - Crear un usuario administrador de forma no exitosa con un correo inválido
+      - Crear un usuario administrador de forma no exitosa sin título del sitio
   - Ingresar a la aplicacion:
       - Login exitoso y Logout
       - Login erroneo por password incorrecto
