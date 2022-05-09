@@ -30,5 +30,10 @@ Funcionalidades y escenarios:
       - Crear post, publicar y quitar publicación.
 
 
-
-
+Intrucciones para ejecutar las pruebas creadas con Kraken:
+  - Instale kraken en su computador siguiendo las instrucciones que se encuentra en: https://thesoftwaredesignlab.github.io/Kraken/#installation
+  - Despliegue la aplicación Ghost de forma local siguiendo este tutorial: https://misovirtual.virtual.uniandes.edu.co/codelabs/ghost-local-deployment/index.html#0
+  - Descargue este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git`
+  - Desde la console entre a la carpeta creada al clonar el repositorio
+  - Dentro de la carpeta raíz del proyecto ejecute el comando npm install
+  - Puede usar el comando `npx kraken-node run` ó `kraken-node run para correr las pruebas
