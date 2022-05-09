@@ -36,4 +36,4 @@ Intrucciones para ejecutar las pruebas creadas con Kraken:
   - Descargue este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git`
   - Desde la console entre a la carpeta creada al clonar el repositorio
   - Dentro de la carpeta raíz del proyecto ejecute el comando npm install
-  - Puede usar el comando `npx kraken-node run` ó `kraken-node run para correr las pruebas
+  - Puede usar el comando `npx kraken-node run` ó `kraken-node run` para correr las pruebas
