@@ -27,7 +27,7 @@ Scenario: Crear post y delete post
     And I click on delete post
     And I wait for 2 seconds
     And I click on confirm delete post
-    And I wait for 2 seconds
+    And I wait for 4 seconds
     And I click on User menu
     And I wait for 1 seconds
     And I click Sing Out

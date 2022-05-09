@@ -12,9 +12,7 @@ When("I enter password {kraken-string}", async function (password) {
 });
 
 Then("I click Sign in", async function () {
-  let element = await this.driver.$(
-    "(//span[contains(text(),'Sign in →')])[1]"
-  );
+  let element = await this.driver.$("#ember12");
   return await element.click();
 });
 
@@ -138,7 +136,9 @@ When("I click on delete post", async function () {
 });
 
 When("I click on confirm delete post", async function () {
-  let element = await this.driver.$(".gh-btn-red");
+  let element = await this.driver.$(
+    "(//span[normalize-space()='Delete post'])[1]"
+  );
   return await element.click();
 });
 
