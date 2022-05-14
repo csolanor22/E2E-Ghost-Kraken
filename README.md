@@ -42,7 +42,7 @@ Intrucciones para ejecutar las pruebas creadas con Kraken:
 Cypress
 -------
 
-** Funcionalidades y escenarios ** 
+**Funcionalidades y escenarios** 
   - Ingresar a la aplicacion:
       - Login exitoso y Logout
       - Login erroneo por password incorrecto
@@ -85,7 +85,7 @@ Cypress
      - Eliminar page publicada
 
 
-** Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3 ** 
+**Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3** 
 
 - instalar docker usando el link de acuerdo a su sistema operativo: 
   - https://docs.docker.com/desktop/mac/install/
@@ -99,37 +99,40 @@ Cypress
   `docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
 
 
-** Intrucciones para para instalar y ejecutar pruebas E2E con Cypress ** 
+**Intrucciones para para instalar y ejecutar pruebas E2E con Cypress** 
 
   - clonar este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git` 
   - entrar desde la consola a la carpeta creada al clonar el repositorio E2E-Ghost-Kraken
   - ejecutar el comando `npm install cypress --save-dev` 
 
   - antes de ejecutar pruebas sobre ghost 3.41.1, configurar el archivo cypress.json
+```
 ...
-
     "baseUrl": "http://localhost:3001",
     "env": {
       "ghost-version" : "3.41.1",
 ...
-
+```
   - antes de ejecutar pruebas sobre ghost 4.41.3, configurar el archivo cypress.json
+```
 ...
-
     "baseUrl": "http://localhost:3002",
     "env": {
       "ghost-version" : "4.41.3",
 ...
-
+```
   - ejecutar pruebas con el comando `node_modules\.bin\cypress run --headless`
 
 
-  ** Nota**: en caso de necesitar reinstalar los contenedores, ejecutar los comandos: 
-  `docker rm -f ghost_3.41.1`, `docker rm -f ghost_4.41.3`
+  **Nota**: en caso de necesitar reinstalar los contenedores, ejecutar los comandos: 
+```  
+  docker rm -f ghost_3.41.1
+  docker rm -f ghost_4.41.3
+```
   y ejecutar nuevamente las instrucciones para instalar las versiones de Ghost, descritas anteriormente.
 
 
-** Sobre la implementación de las pruebas Cypress ** 
+**Sobre la implementación de las pruebas Cypress** 
 
   - se implementó el patrón given-when-then para indicar el contexto del escenario, la acción sobre la aplicación bajo pruebas y el resultado esperado:
 ```
@@ -183,7 +186,6 @@ Cypress.Commands.add('listPagesAndCheck', (page) => {
 })
 ...
 ```
-
   para manejar los cambios en los selectores segun la versión, se configuró la variable de ambiente ghost-version y se ajustaron los comandos impactados:
   - createPage/editPage: placeholder del titulo
   - deletePage: titulo/clase del botón settings
