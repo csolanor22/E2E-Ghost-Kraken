@@ -1,9 +1,11 @@
 {
     "baseUrl": "http://localhost:3001",
     "env": {
-      "ghost-version" : "3.42",
+      "ghost-version" : "3.41.1",
+      "site"          : "Ghost E2E Tests",
+      "name"          : "Admin Ghost", 
       "email"         : "marlonagon@yahoo.com",
-      "password"      : "chisp@s2022", 
+      "password"      : "prueb@sE2E-m1s0", 
       "draftPage"     : "Cypress Test Page", 
       "scheduledPage" : "Cypress Test Page Scheduled", 
       "publishedPage" : "Cypress Test Page Published",

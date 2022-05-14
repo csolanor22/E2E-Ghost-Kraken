@@ -85,22 +85,22 @@ Funcionalidades y escenarios
      - Eliminar page publicada
 
 
-Intrucciones para instalar las versiones de Ghost
+Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3
 
 - instalar docker usando el link de acuerdo a su sistema operativo: 
   https://docs.docker.com/desktop/mac/install/
   https://docs.docker.com/desktop/linux/install/
   https://docs.docker.com/desktop/windows/install/
 
-- instalar contenedor ghost 3.42 puerto 3001
-`docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.42 ghost:3.42`
-- configurar usuario admin ghost 3.42. Nota: documentar el email y password configurado para luego ajustar el archivo cypress.json
-- logout ghost 3.42
+- instalar contenedor ghost 3.41.1 puerto 3001
+`docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1`
+- configurar usuario admin ghost 3.41.1. Nota: documentar el email y password configurado para luego ajustar el archivo cypress.json
+- logout ghost 3.41.1
 
-- instalar contenedor ghost 4.44 puerto 3002
-`docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.44.0 ghost:4.44.0`
-- configurar usuario admin ghost 3.42. Nota: documentar el email y password configurado para luego ajustar el archivo cypress.json
-- logout ghost 4.44
+- instalar contenedor ghost 4.41.3 puerto 3002
+`docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
+- configurar usuario admin ghost 3.41.1. Nota: documentar el email y password configurado para luego ajustar el archivo cypress.json
+- logout ghost 4.41.3
 
 
 Intrucciones para para instalar y ejecutar pruebas E2E con Cypress
@@ -108,15 +108,15 @@ Intrucciones para para instalar y ejecutar pruebas E2E con Cypress
   - clonar este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git` 
   - entrar desde la consola a la carpeta que creada al clonar el repositorio E2E-Ghost-Kraken
   - ejecutar el comando `npm install cypress --save-dev` 
-  - antes de ejecutar pruebas sobre ghost 3.42, configurar el archivo cypress.json
+  - antes de ejecutar pruebas sobre ghost 3.41.1, configurar el archivo cypress.json
     "baseUrl": "http://localhost:3001",
     "env": {
-      "ghost-version" : "3.42",
+      "ghost-version" : "3.41.1",
       ...
-  - antes de ejecutar ejecutar pruebas sobre ghost 4.44, configurar el archivo cypress.json
+  - antes de ejecutar ejecutar pruebas sobre ghost 4.41.3, configurar el archivo cypress.json
     "baseUrl": "http://localhost:3002",
     "env": {
-      "ghost-version" : "4.44",
+      "ghost-version" : "4.41.3",
       ...
   - ejecutar pruebas con el comando `node_modules\.bin\cypress run --headless`
 
@@ -124,8 +124,8 @@ Intrucciones para para instalar y ejecutar pruebas E2E con Cypress
 Instrucciones para reinstalar los contenedores 
 
   en caso de necesitar re-ejecutar las pruebas es necesario detener y borrar los contenedores: 
-  `docker rm -f ghost_3.42`
-  `docker rm -f ghost_4.44.0`
+  `docker rm -f ghost_3.41.1`
+  `docker rm -f ghost_4.41.3`
   
   y ejecutar nuevamente las instrucciones para instalar las versiones de Ghost, descritas anteriormente (instalar contenedor ghost, configurar usuario admin, logout)
 
