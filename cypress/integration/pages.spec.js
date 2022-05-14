@@ -1,6 +1,8 @@
 describe('ghost admin pages', () => {
 
 	const version = Cypress.env('ghost-version')
+	const site = Cypress.env('site')
+	const name = Cypress.env('name')
 	const email = Cypress.env('email')
 	const password = Cypress.env('password')
 	const draft = Cypress.env('draftPage')
@@ -9,13 +11,15 @@ describe('ghost admin pages', () => {
 	const featured = Cypress.env('featuredPage')
 	const desc =  Cypress.env('lorem')
 
+	before(()=>{
+		cy.createAdmin(version, site, name, email, password)
+    })
+
 	beforeEach(()=>{
 		cy.login(email, password)
-		cy.wait(1000)
     })
 
 	afterEach(()=>{ 
- 		cy.wait(3000)
 		cy.logout() 
 	})  
 
@@ -53,17 +57,6 @@ describe('ghost admin pages', () => {
 				cy.listPagesAndCheck(published);
 			})		
 		})
-		/*
-		context('When admin creates new featured page', () => {
-			beforeEach(() => {
-				cy.createPage(published, desc)
-				cy.featurePage()
-			})
-			it('Then admin sees new featured page in list', () => {
-				cy.listPagesAndCheck(published);
-			})	
-		})
-		//*/
 	})
 
 	context('Given admin accesses pages list option for filtering', () => {
@@ -126,20 +119,7 @@ describe('ghost admin pages', () => {
 				cy.screenshot()
 			})
 		})
-/*
-		context('When admin edits excerpt of a published page', () => {
-			beforeEach(() => {
-				cy.editPageExcerpt(version, published +'-excerpt')
-			})
-  
-			it('Then admin sees new excerpt checking published page', () => {
-				// cy.listPages()
-				cy.visit('/cypress-test-page-published')
-				cy.contains(published +'-excerpt')
-				cy.screenshot()
-			})
-		})		
-//*/
+
 		context('When admin adds tag to published page', () => {
 			beforeEach(() => {
 				cy.editTagPage(version, 'TestPageTag')
