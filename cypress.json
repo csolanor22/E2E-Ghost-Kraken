@@ -10,6 +10,9 @@
       "scheduledPage" : "Cypress Test Page Scheduled", 
       "publishedPage" : "Cypress Test Page Published",
       "featuredPage"  : "Cypress Test Page Featured", 
-      "lorem"         : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer a lacus in sem tempus"
+      "lorem"         : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer a lacus in sem tempus",
+      "draftPost"     : "Cypress Test Post", 
+      "scheduledPost" : "Cypress Test Post Scheduled", 
+      "publishedPost" : "Cypress Test Post Published"
     }
   }
