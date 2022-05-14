@@ -42,7 +42,7 @@ Intrucciones para ejecutar las pruebas creadas con Kraken:
 Cypress
 -------
 
-Funcionalidades y escenarios
+** Funcionalidades y escenarios ** 
   - Ingresar a la aplicacion:
       - Login exitoso y Logout
       - Login erroneo por password incorrecto
@@ -85,55 +85,54 @@ Funcionalidades y escenarios
      - Eliminar page publicada
 
 
-Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3
+** Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3 ** 
 
 - instalar docker usando el link de acuerdo a su sistema operativo: 
-  https://docs.docker.com/desktop/mac/install/
-  https://docs.docker.com/desktop/linux/install/
-  https://docs.docker.com/desktop/windows/install/
+  - https://docs.docker.com/desktop/mac/install/
+  - https://docs.docker.com/desktop/linux/install/
+  - https://docs.docker.com/desktop/windows/install/
 
 - instalar contenedor ghost 3.41.1 puerto 3001
-`docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1`
-- configurar usuario admin ghost 3.41.1. Nota: documentar el email y password configurado para luego ajustar el archivo cypress.json
-- logout ghost 3.41.1
+  `docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1`
 
 - instalar contenedor ghost 4.41.3 puerto 3002
-`docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
-- configurar usuario admin ghost 3.41.1. Nota: documentar el email y password configurado para luego ajustar el archivo cypress.json
-- logout ghost 4.41.3
+  `docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
 
 
-Intrucciones para para instalar y ejecutar pruebas E2E con Cypress
+** Intrucciones para para instalar y ejecutar pruebas E2E con Cypress ** 
 
   - clonar este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git` 
-  - entrar desde la consola a la carpeta que creada al clonar el repositorio E2E-Ghost-Kraken
+  - entrar desde la consola a la carpeta creada al clonar el repositorio E2E-Ghost-Kraken
   - ejecutar el comando `npm install cypress --save-dev` 
+
   - antes de ejecutar pruebas sobre ghost 3.41.1, configurar el archivo cypress.json
+...
+
     "baseUrl": "http://localhost:3001",
     "env": {
       "ghost-version" : "3.41.1",
-      ...
-  - antes de ejecutar ejecutar pruebas sobre ghost 4.41.3, configurar el archivo cypress.json
+...
+
+  - antes de ejecutar pruebas sobre ghost 4.41.3, configurar el archivo cypress.json
+...
+
     "baseUrl": "http://localhost:3002",
     "env": {
       "ghost-version" : "4.41.3",
-      ...
+...
+
   - ejecutar pruebas con el comando `node_modules\.bin\cypress run --headless`
 
 
-Instrucciones para reinstalar los contenedores 
-
-  en caso de necesitar re-ejecutar las pruebas es necesario detener y borrar los contenedores: 
-  `docker rm -f ghost_3.41.1`
-  `docker rm -f ghost_4.41.3`
-  
-  y ejecutar nuevamente las instrucciones para instalar las versiones de Ghost, descritas anteriormente (instalar contenedor ghost, configurar usuario admin, logout)
+  ** Nota**: en caso de necesitar reinstalar los contenedores, ejecutar los comandos: 
+  `docker rm -f ghost_3.41.1`, `docker rm -f ghost_4.41.3`
+  y ejecutar nuevamente las instrucciones para instalar las versiones de Ghost, descritas anteriormente.
 
 
-Sobre la implementación de las pruebas Cypress 
+** Sobre la implementación de las pruebas Cypress ** 
 
   - se implementó el patrón given-when-then para indicar el contexto del escenario, la acción sobre la aplicación bajo pruebas y el resultado esperado:
-
+```
  ghost admin pages
     Given admin accesses pages list option
       When admin creates new page
@@ -142,11 +141,11 @@ Sobre la implementación de las pruebas Cypress
         √ Then admin sees new schedule page in list (9556ms)
       When admin creates new published page
         √ Then admin sees new published page in list (9090ms)
-
+```
   - también se implementaron commands para agrupar funcionalidades, delegar la responsabilidad del llamado a los selectores (incluyendo los cambios de versión) y simplificar el código de pruebas: 
 
   cypress/integration/pages.spec.js:
-
+```
 ...
 	context('Given admin accesses pages list option', () => {
 		beforeEach(()=>{
@@ -163,9 +162,10 @@ Sobre la implementación de las pruebas Cypress
 			})
 		})
 ...
+```
 
   cypress/support/commands.js
-
+```
 ...
 Cypress.Commands.add('listPages', () => {
     cy.get('a[href="#/pages/"]').click()
@@ -182,8 +182,9 @@ Cypress.Commands.add('listPagesAndCheck', (page) => {
     cy.screenshot()
 })
 ...
+```
 
-  - para manejar los cambios en los selectores segun la versión, se configuró la variable de ambiente ghost-version y se ajustaron los comandos impactados:
-  createPage/editPage: placeholder del titulo
-  deletePage: titulo/clase del botón settings
-  schedulePage/publishPage: clase del boton de confirmación
+  para manejar los cambios en los selectores segun la versión, se configuró la variable de ambiente ghost-version y se ajustaron los comandos impactados:
+  - createPage/editPage: placeholder del titulo
+  - deletePage: titulo/clase del botón settings
+  - schedulePage/publishPage: clase del boton de confirmación
