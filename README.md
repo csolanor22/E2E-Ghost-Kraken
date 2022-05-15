@@ -121,15 +121,22 @@ Cypress
       "ghost-version" : "4.41.3",
 ...
 ```
-  - ejecutar pruebas con el comando `node_modules\.bin\cypress run --headless`
+  - ejecutar todas las pruebas con el comando `node_modules\.bin\cypress run --headless --spec "cypress/integration/*.spec.js"`, incluidas las VRT. Como resultado debe obtener:  
+
+![cypress-tests-finished](https://user-images.githubusercontent.com/98719877/168498434-42724356-29f8-4f0a-8dbd-31387ba245dc.png)
+
+  - en la ruta cypress\screenshots puede revisar las capturas de pantalla generadas durante la prueba 
 
 
   **Nota**: en caso de necesitar reinstalar los contenedores, ejecutar los comandos: 
 ```  
   docker rm -f ghost_3.41.1
   docker rm -f ghost_4.41.3
+
+  docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1
+  docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3
+
 ```
-  y ejecutar nuevamente las instrucciones para instalar las versiones de Ghost, descritas anteriormente.
 
 
 **Sobre la implementación de las pruebas Cypress** 
@@ -190,3 +197,27 @@ Cypress.Commands.add('listPagesAndCheck', (page) => {
   - createPage/editPage: placeholder del titulo
   - deletePage: titulo/clase del botón settings
   - schedulePage/publishPage: clase del boton de confirmación
+
+  ```
+...
+Cypress.Commands.add('createPage', (version, title, description) => {
+    if (version == '4.41.3')
+        cy.get('textarea[placeholder="Page title"]').type(title)
+    else
+        cy.get('textarea[placeholder="Page Title"]').type(title)
+    cy.get('.koenig-editor__editor-wrapper').type(description +'{enter}')
+    cy.wait(1000)
+    cy.screenshot()
+})
+...
+Cypress.Commands.add('publishPage', (version) => {
+    cy.contains('Publish').click()
+    cy.screenshot()
+    if (version == '4.41.3')
+        cy.get('button.gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view').click()
+    else
+        cy.get('button.gh-btn.gh-btn-blue.gh-publishmenu-button.gh-btn-icon.ember-view').click()
+    cy.wait(1000)
+})
+...
+```

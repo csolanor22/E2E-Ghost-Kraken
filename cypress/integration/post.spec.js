@@ -1,6 +1,8 @@
 describe('ghost admin post', () => {
 
 	const version = Cypress.env('ghost-version')
+	const site = Cypress.env('site')
+	const name = Cypress.env('name')	
 	const email = Cypress.env('email')
 	const password = Cypress.env('password')
 	const draft = Cypress.env('draftPost')
@@ -8,15 +10,17 @@ describe('ghost admin post', () => {
 	const published = Cypress.env('publishedPost')
 	const desc =  Cypress.env('lorem')
 
+	before(()=>{
+		cy.createAdmin(version, site, name, email, password)
+    })
+
 	beforeEach(()=>{
 		cy.login(email, password)
-		cy.wait(1000)
-	})
+    })
 
 	afterEach(()=>{ 
- 		cy.wait(3000)
 		cy.logout() 
-	})  
+	}) 
 
 	context('Given admin accesses post list option', () => {
 		beforeEach(()=>{
@@ -114,7 +118,7 @@ describe('ghost admin post', () => {
 			})
 		})
 	
-		context('When admin adds tag to published page', () => {
+		context('When admin adds tag to published post', () => {
 			beforeEach(() => {
 				cy.editTagPost(version, 'TestPostTag')
 			})
@@ -127,5 +131,53 @@ describe('ghost admin post', () => {
 		})
 	})
 
+	context('Given admin accesses posts list option for delete', () => {
+		beforeEach(()=>{
+			cy.listPost()
+		})		
+		
+		context('When admin delete a draft post', () => {
+			beforeEach(()=>{
+				cy.filterDraftPost()
+				cy.screenshot()
+				cy.deletePost(version, draft)
+			})		
+
+			it('Then admin sees an empty draft posts list', () => {
+				cy.filterDraftPost()
+				cy.contains(draft).should('not.exist')
+			})
+		})
+
+		context('When admin delete a scheduled post', () => {
+			beforeEach(()=>{
+				cy.filterScheduledPost()
+				cy.screenshot()
+				cy.deletePost(version, scheduled)
+			})		
+
+			it('Then admin sees an empty scheduled posts list', () => {
+				cy.filterScheduledPost()
+				cy.contains(scheduled).should('not.exist')
+			})
+		})
+
+		context('When admin delete a published post', () => {
+			beforeEach(()=>{
+				cy.filterPublishedPost()
+				cy.screenshot()
+				cy.deletePost(version, published)
+			})		
+	
+			it('Then admin sees an empty published posts list', () => {
+				cy.filterPublishedPost()
+				cy.contains(published).should('not.exist')
+			})
+		})
+
+		afterEach(()=>{
+			cy.screenshot()
+		})
+	})
 			
 })
