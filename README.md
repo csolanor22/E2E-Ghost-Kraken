@@ -52,14 +52,17 @@ Cypress
       - Login con formato de usuario no valido
 
   - Administración Post
-     - Listar Post
-     - Crear post sin publicar
-     - Crear post y publicar
-     - Crear post repetidos
-     - Crear post y añadir etiquetas (tags)
-     - Crear post y publicar 2 minutos después
-     - Actualizar un post
-     - Crear eliminar el post
+     - Crear post borrador
+     - Crear post y programarlo
+     - Crear post y publicarlo
+     - Listar post
+     - Listar post borradores
+     - Listar post programados
+     - Listar post por antiguedad de publicación
+     - Listar post por antiguedad de actualización
+     - Actualizar post - titulo y contenido
+     - Actualizar post - agregar tag
+     - Eliminar post
 
    - Tags
      - Listar Tags
