@@ -9,19 +9,30 @@ Integrantes:
 
 ## Ghost
 
-**Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3**
+**Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3 usando contenedores de Docker**
 
-- instalar docker usando el link de acuerdo a su sistema operativo:
+- Instalar docker usando el link de acuerdo a su sistema operativo:
 
   - https://docs.docker.com/desktop/mac/install/
   - https://docs.docker.com/desktop/linux/install/
   - https://docs.docker.com/desktop/windows/install/
 
-- instalar contenedor ghost 3.41.1 puerto 3001
+- Instalar contenedor ghost 3.41.1 puerto 3001
   `docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1`
 
-- instalar contenedor ghost 4.41.3 puerto 3002
+- Instalar contenedor ghost 4.41.3 puerto 3002
   `docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
+
+**Nota**: en caso de necesitar reinstalar los contenedores, ejecutar los comandos:
+
+```
+  docker rm -f ghost_3.41.1
+  docker rm -f ghost_4.41.3
+
+  docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1
+  docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3
+
+```
 
 ## Kraken
 
@@ -135,7 +146,7 @@ Scenario: Creacion de usuario con email inválido
   - Eliminar page programada
   - Eliminar page publicada
 
-**Intrucciones para para instalar y ejecutar pruebas E2E con Cypress**
+**Intrucciones para instalar y ejecutar pruebas E2E con Cypress**
 
 - clonar este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git`
 - entrar desde la consola a la carpeta creada al clonar el repositorio E2E-Ghost-Kraken
@@ -167,16 +178,6 @@ Scenario: Creacion de usuario con email inválido
 
 - en la ruta cypress\screenshots puede revisar las capturas de pantalla generadas durante la prueba
 
-**Nota**: en caso de necesitar reinstalar los contenedores, ejecutar los comandos:
-
-```
-  docker rm -f ghost_3.41.1
-  docker rm -f ghost_4.41.3
-
-  docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1
-  docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3
-
-```
 
 **Sobre la implementación de las pruebas Cypress**
 
