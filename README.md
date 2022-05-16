@@ -194,7 +194,6 @@ Scenario: Creacion de usuario con email inválido
 **Sobre la implementación de las pruebas Cypress**
 
 - se implementó el patrón given-when-then para indicar el contexto del escenario, la acción sobre la aplicación bajo pruebas y el resultado esperado:
->>>>>>> a9efdd6e1d83d37722d29eadf5d3a141ebb1130c
 
 ```
   ghost admin visual regression tests
