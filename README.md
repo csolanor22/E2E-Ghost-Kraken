@@ -52,8 +52,9 @@ Intrucciones para ejecutar las pruebas creadas con Kraken:
 - Despliegue la aplicación Ghost de forma local siguiendo este tutorial: https://misovirtual.virtual.uniandes.edu.co/codelabs/ghost-local-deployment/index.html#0
 - Descargue este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git`
 - Desde la console entre a la carpeta creada al clonar el repositorio
-- Dentro de la carpeta raíz del proyecto ejecute el comando npm install
+- Dentro de la carpeta kraken del proyecto ejecute el comando npm install
 - Puede usar el comando `npx kraken-node run` ó `kraken-node run` para correr las pruebas
+- En el archivo properties.json que se encuentra dentro de la carpeta kraken debe cambiar la variable `BASE_URL` a `http://localhost:3001` si se requiere probar la versión 3.41.1 o cambiarla a `http://localhost:3002` si se requiere probar la versión 4.41.3.
 
 **Sobre la implementación de las pruebas con Kraken**
 
@@ -80,7 +81,7 @@ Scenario: Creacion de usuario con email inválido
     And I take a screenshot "7"
 ```
 
-- En el archivo {{properties.json}} se incluyeron variables para adaptar las pruebas a la versión requerida, ya sea la 3.41.1 o la 4.41.3
+- En el archivo properties.json se incluyeron variables para adaptar las pruebas a la versión requerida, ya sea la 3.41.1 o la 4.41.3
   - Este archivo también incluye variables que almacenan mensajes de error, mensajes de éxito y datos del usuario que se crea como administrador.
 
 ## Cypress
