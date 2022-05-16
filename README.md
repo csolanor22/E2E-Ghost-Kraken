@@ -126,12 +126,21 @@ Cypress
       "ghost-version" : "4.41.3",
 ...
 ```
-  - ejecutar todas las pruebas con el comando `node_modules\.bin\cypress run --headless --spec "cypress/integration/*.spec.js"`, incluidas las VRT. Como resultado debe obtener:  
+  - ejecutar todas las pruebas con el comando 
+```
+  node_modules\.bin\cypress run --headless --spec "cypress/integration/*.spec.js"
+```
+  **Nota**: con el anterior comando se incluye la ejecución de las pruebas VRT `vrt.spec.js`. 
+  
+  - El resultado de las pruebas debe verse así:  
 
 ![cypress-tests-finished](https://user-images.githubusercontent.com/98719877/168498434-42724356-29f8-4f0a-8dbd-31387ba245dc.png)
 
-  - en la ruta cypress\screenshots puede revisar las capturas de pantalla generadas durante la prueba 
-
+  - con el proposito de preparar las pruebas VRT, al final de las pruebas de cada versión, copie en la ruta `vrt`, las capturas de pantalla ubicadas en la ruta `cypress\screenshots\vrt.spec.js` y renonmbre las carpetas de la siguiente manera, dependiendo de la versión: 
+```
+  vrt\cypress\screenshots-3.41.1\vrt.spec.js
+  vrt\cypress\screenshots-4.41.3\vrt.spec.js
+```
 
   **Nota**: en caso de necesitar reinstalar los contenedores, ejecutar los comandos: 
 ```  
@@ -142,7 +151,6 @@ Cypress
   docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3
 
 ```
-
 
 **Sobre la implementación de las pruebas Cypress** 
 
@@ -237,3 +245,24 @@ Cypress.Commands.add('publishPage', (version) => {
 })
 ...
 ```
+
+Visual Regression Tests
+-----------------------
+
+**Intrucciones para para configurar y ejecutar las VRT con Resemble.js** 
+
+- Abrir terminal para crear un proyecto de Node.js donde se alojará el código de las pruebas VRT. 
+- Cambiar al directorio donde va a trabajar
+- Crear un subdirectorio y ubíquese en él.
+- Ejecutar comando `npm init`, se le solicitará  información para crear el archivo package.json
+- Copiar en la raiz del nuevo proyecto los archivos `index.js` y `config.json` descargados del repositorio, ubicados en la ruta vrt
+- Instalar las dependencias
+```
+npm install playwright
+npm install resemblejs
+```
+- Ejecutar la prueba VRT con el comando 
+```
+node index.js
+```
+- Revisar el reporte generado
