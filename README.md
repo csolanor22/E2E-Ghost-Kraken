@@ -306,10 +306,9 @@ Visual Regression Tests
 npm install playwright
 npm install resemblejs
 ```
-- Ejecutar la prueba VRT con el comando 
+- Ejecutar la prueba VRT desde la carpeta raíz del repositorio con el comando:
 ```
 node resemble.js
-node index.js
 ```
 - Revisar el reporte generado: Las imágenes resultado de la comparación que realiza resemble se encuentran en la carpeta ./results. 
 - Dentro de esta carpeta results, se genera una carpeta con las imágenes de cada set de comparaciones hecha y el reporte llamado report.html
