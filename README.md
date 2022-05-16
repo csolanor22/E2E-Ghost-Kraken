@@ -7,6 +7,22 @@
  - CESAR ALFONSO SOLANO RUIZ  (c.solanor@uniandes.edu.co)
  - ANA LUCIA FORERO NEME  (a.foreron@uniandes.edu.co)
 
+Ghost
+-----
+
+**Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3** 
+
+- instalar docker usando el link de acuerdo a su sistema operativo: 
+  - https://docs.docker.com/desktop/mac/install/
+  - https://docs.docker.com/desktop/linux/install/
+  - https://docs.docker.com/desktop/windows/install/
+
+- instalar contenedor ghost 3.41.1 puerto 3001
+  `docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1`
+
+- instalar contenedor ghost 4.41.3 puerto 3002
+  `docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
+
 Kraken
 ------
 
@@ -88,20 +104,6 @@ Cypress
      - Eliminar page publicada
 
 
-**Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3** 
-
-- instalar docker usando el link de acuerdo a su sistema operativo: 
-  - https://docs.docker.com/desktop/mac/install/
-  - https://docs.docker.com/desktop/linux/install/
-  - https://docs.docker.com/desktop/windows/install/
-
-- instalar contenedor ghost 3.41.1 puerto 3001
-  `docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1`
-
-- instalar contenedor ghost 4.41.3 puerto 3002
-  `docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
-
-
 **Intrucciones para para instalar y ejecutar pruebas E2E con Cypress** 
 
   - clonar este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git` 
@@ -146,14 +148,25 @@ Cypress
 
   - se implementó el patrón given-when-then para indicar el contexto del escenario, la acción sobre la aplicación bajo pruebas y el resultado esperado:
 ```
- ghost admin pages
+  ghost admin visual regression tests
+    Given admin accesses post list option
+      When admin creates new published post
+        √ Then admin sees new published post in list (24287ms)
     Given admin accesses pages list option
-      When admin creates new page
-        √ Then admin sees new draft page in list (10040ms)
-      When admin creates new schedule page
-        √ Then admin sees new schedule page in list (9556ms)
       When admin creates new published page
-        √ Then admin sees new published page in list (9090ms)
+        √ Then admin sees new published page in list (15976ms)
+    Given admin access posts list option for editing
+      When admin edits title of a published post
+        √ Then admin sees new title checking published post (16684ms)
+    Given admin access pages list option for editing
+      When admin edits title of a published page
+        √ Then admin sees new title checking published page (14630ms)
+    Given admin accesses post list option for delete
+      When admin delete a published post
+        √ Then admin sees an empty published posts list (13444ms)
+    Given admin accesses pages list option for delete
+      When admin delete a published page
+        √ Then admin sees an empty published pages list (13370ms)
 ```
   - también se implementaron commands para agrupar funcionalidades, delegar la responsabilidad del llamado a los selectores (incluyendo los cambios de versión) y simplificar el código de pruebas: 
 
