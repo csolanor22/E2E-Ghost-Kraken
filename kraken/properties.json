@@ -1,9 +1,12 @@
 {
+    "BASE_URL": "http://localhost:3002",
+    "SHORT_VERSION_V3": "v3",
+    "SHORT_VERSION_V4": "v4",
     "USERNAME1": "user123@mail.com",
     "PASSWORD1": "User-12345",
     "USERNAME2": "user-erroneo@mail.com",
     "PASSWORD2": "password-erroneo",
-    "NEW_SITE_TITLE": "Mi nuevo sitio",
+    "NEW_SITE_TITLE": "Mi nuevo sitio - Pruebas automatizadas",
     "NEW_USER_FULLNAME": "Pepito Perez",
     "NEW_INVALID_MAIL": "invalidEmail",
     "SHORT_PASSWORD": "1234",
@@ -11,6 +14,6 @@
     "INVALID_MAIL_MSG": "Invalid Email.",
     "SHORT_PWD_MSG": "Password must be at least 10 characters long",
     "INSECURE_PASSWORD_MSG": "Sorry, you cannot use an insecure password",
-    "EMTPY_TITLE_MSG": "Please enter a blog title.",
-    "MY_FIRST_BLOG_MSG": "Mi nuevo sitio"
+    "EMTPY_TITLE_MSG": "Please enter a ",
+    "MY_FIRST_BLOG_MSG": "Mi nuevo sitio - Pruebas automatizadas"
 }
