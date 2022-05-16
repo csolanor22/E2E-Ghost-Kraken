@@ -308,6 +308,9 @@ npm install resemblejs
 ```
 - Ejecutar la prueba VRT con el comando 
 ```
+node resemble.js
 node index.js
 ```
-- Revisar el reporte generado
+- Revisar el reporte generado: Las imágenes resultado de la comparación que realiza resemble se encuentran en la carpeta ./results. 
+- Dentro de esta carpeta results, se genera una carpeta con cada set de comparaciones hecha.
+- 
