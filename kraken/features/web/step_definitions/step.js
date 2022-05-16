@@ -1,5 +1,30 @@
-const { Given, When, Then } = require("@cucumber/cucumber");
+const { Given, When, Then, Before } = require("@cucumber/cucumber");
 const expect = require("chai").expect;
+const fs = require("fs");
+const {
+  SHORT_VERSION_V3,
+  SHORT_VERSION_V4,
+  BASE_URL,
+  NUMBER,
+} = require("../../../properties.json");
+let dir = "";
+
+Before((scenario) => {
+  let folder = "";
+  if (BASE_URL == "http://localhost:3001") {
+    folder = SHORT_VERSION_V3;
+  } else {
+    folder = SHORT_VERSION_V4;
+  }
+  dir = "./results/" + folder + "/";
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+});
+
+Then("I take a screenshot {string}", async function (id) {
+  await this.driver.saveScreenshot(dir + "/" + id + ".png");
+});
 
 Given("I navigate to register page {kraken-string}", async function (baseUrl) {
   let loginUrl = "";
