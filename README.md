@@ -296,12 +296,8 @@ Visual Regression Tests
 
 **Intrucciones para para configurar y ejecutar las VRT con Resemble.js** 
 
-- Abrir terminal para crear un proyecto de Node.js donde se alojará el código de las pruebas VRT. 
-- Cambiar al directorio donde va a trabajar
-- Crear un subdirectorio y ubíquese en él.
-- Ejecutar comando `npm init`, se le solicitará  información para crear el archivo package.json
-- Copiar en la raiz del nuevo proyecto los archivos `index.js` y `config.json` descargados del repositorio, ubicados en la ruta vrt
-- Instalar las dependencias
+- Para generar este reporte ya se deben haber ejecutado las pruebas de Kraken y Cypress para tener las capturas de pantalla necesarias
+- Instalar las dependencias desde el directorio raíz del repositorio
 ```
 npm install playwright
 npm install resemblejs
