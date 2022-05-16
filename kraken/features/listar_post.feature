@@ -6,7 +6,7 @@ Scenario: Listar post positivo
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"
     And I wait for 1 seconds
-    And I enter password "<PASSWORD1>"  "<BASE_URL>"
+    And I enter password "<PASSWORD1>" "<BASE_URL>"
     And I click Sign in "<BASE_URL>"
     And I wait for 2 seconds
     And I click in Posts "<BASE_URL>"
