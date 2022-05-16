@@ -312,5 +312,5 @@ node resemble.js
 node index.js
 ```
 - Revisar el reporte generado: Las imágenes resultado de la comparación que realiza resemble se encuentran en la carpeta ./results. 
-- Dentro de esta carpeta results, se genera una carpeta con cada set de comparaciones hecha.
-- 
+- Dentro de esta carpeta results, se genera una carpeta con las imágenes de cada set de comparaciones hecha y el reporte llamado report.html
+- Por ejemplo ver el reporte: E2E-Ghost-Kraken/results/2022-05-16T03.49.53.570Z/report.html
