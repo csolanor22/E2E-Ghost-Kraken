@@ -7,6 +7,22 @@
  - CESAR ALFONSO SOLANO RUIZ  (c.solanor@uniandes.edu.co)
  - ANA LUCIA FORERO NEME  (a.foreron@uniandes.edu.co)
 
+Ghost
+-----
+
+**Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3** 
+
+- instalar docker usando el link de acuerdo a su sistema operativo: 
+  - https://docs.docker.com/desktop/mac/install/
+  - https://docs.docker.com/desktop/linux/install/
+  - https://docs.docker.com/desktop/windows/install/
+
+- instalar contenedor ghost 3.41.1 puerto 3001
+  `docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1`
+
+- instalar contenedor ghost 4.41.3 puerto 3002
+  `docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
+
 Kraken
 ------
 
@@ -88,20 +104,6 @@ Cypress
      - Eliminar page publicada
 
 
-**Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3** 
-
-- instalar docker usando el link de acuerdo a su sistema operativo: 
-  - https://docs.docker.com/desktop/mac/install/
-  - https://docs.docker.com/desktop/linux/install/
-  - https://docs.docker.com/desktop/windows/install/
-
-- instalar contenedor ghost 3.41.1 puerto 3001
-  `docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1`
-
-- instalar contenedor ghost 4.41.3 puerto 3002
-  `docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3`
-
-
 **Intrucciones para para instalar y ejecutar pruebas E2E con Cypress** 
 
   - clonar este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git` 
@@ -124,29 +126,47 @@ Cypress
       "ghost-version" : "4.41.3",
 ...
 ```
-  - ejecutar pruebas con el comando `node_modules\.bin\cypress run --headless`
+  - ejecutar todas las pruebas con el comando `node_modules\.bin\cypress run --headless --spec "cypress/integration/*.spec.js"`, incluidas las VRT. Como resultado debe obtener:  
+
+![cypress-tests-finished](https://user-images.githubusercontent.com/98719877/168498434-42724356-29f8-4f0a-8dbd-31387ba245dc.png)
+
+  - en la ruta cypress\screenshots puede revisar las capturas de pantalla generadas durante la prueba 
 
 
   **Nota**: en caso de necesitar reinstalar los contenedores, ejecutar los comandos: 
 ```  
   docker rm -f ghost_3.41.1
   docker rm -f ghost_4.41.3
+
+  docker run -d -e url=http://localhost:3001 -p 3001:2368 --name ghost_3.41.1 ghost:3.41.1
+  docker run -d -e url=http://localhost:3002 -p 3002:2368 --name ghost_4.41.3 ghost:4.41.3
+
 ```
-  y ejecutar nuevamente las instrucciones para instalar las versiones de Ghost, descritas anteriormente.
 
 
 **Sobre la implementación de las pruebas Cypress** 
 
   - se implementó el patrón given-when-then para indicar el contexto del escenario, la acción sobre la aplicación bajo pruebas y el resultado esperado:
 ```
- ghost admin pages
+  ghost admin visual regression tests
+    Given admin accesses post list option
+      When admin creates new published post
+        √ Then admin sees new published post in list (24287ms)
     Given admin accesses pages list option
-      When admin creates new page
-        √ Then admin sees new draft page in list (10040ms)
-      When admin creates new schedule page
-        √ Then admin sees new schedule page in list (9556ms)
       When admin creates new published page
-        √ Then admin sees new published page in list (9090ms)
+        √ Then admin sees new published page in list (15976ms)
+    Given admin access posts list option for editing
+      When admin edits title of a published post
+        √ Then admin sees new title checking published post (16684ms)
+    Given admin access pages list option for editing
+      When admin edits title of a published page
+        √ Then admin sees new title checking published page (14630ms)
+    Given admin accesses post list option for delete
+      When admin delete a published post
+        √ Then admin sees an empty published posts list (13444ms)
+    Given admin accesses pages list option for delete
+      When admin delete a published page
+        √ Then admin sees an empty published pages list (13370ms)
 ```
   - también se implementaron commands para agrupar funcionalidades, delegar la responsabilidad del llamado a los selectores (incluyendo los cambios de versión) y simplificar el código de pruebas: 
 
@@ -193,3 +213,27 @@ Cypress.Commands.add('listPagesAndCheck', (page) => {
   - createPage/editPage: placeholder del titulo
   - deletePage: titulo/clase del botón settings
   - schedulePage/publishPage: clase del boton de confirmación
+
+  ```
+...
+Cypress.Commands.add('createPage', (version, title, description) => {
+    if (version == '4.41.3')
+        cy.get('textarea[placeholder="Page title"]').type(title)
+    else
+        cy.get('textarea[placeholder="Page Title"]').type(title)
+    cy.get('.koenig-editor__editor-wrapper').type(description +'{enter}')
+    cy.wait(1000)
+    cy.screenshot()
+})
+...
+Cypress.Commands.add('publishPage', (version) => {
+    cy.contains('Publish').click()
+    cy.screenshot()
+    if (version == '4.41.3')
+        cy.get('button.gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view').click()
+    else
+        cy.get('button.gh-btn.gh-btn-blue.gh-publishmenu-button.gh-btn-icon.ember-view').click()
+    cy.wait(1000)
+})
+...
+```
