@@ -51,9 +51,16 @@ Cypress.Commands.add('logout', () => {
     // cy.url().should('include', 'signin')
 })
 
+Cypress.Commands.add('site', () => {
+    cy.get('a[href="#/site/"]').click()
+    cy.url().should('include', 'site')
+    cy.wait(1000)
+})
+
 Cypress.Commands.add('listPages', () => {
-    cy.get('a[href="#/pages/"]').click()
-    cy.url().should('include', 'pages')
+    // cy.get('a[href="#/pages/"]').click()
+    cy.visit('/ghost/#/pages/')
+    // cy.url().should('include', 'pages')
     cy.wait(1000)
     cy.screenshot()
 })
@@ -118,31 +125,47 @@ Cypress.Commands.add('editPageExcerpt', (version, excerpt) => {
     cy.screenshot()
 })
 
-Cypress.Commands.add('editTagPage', (version, tag) => {
+Cypress.Commands.add('editTagPageByType', (version, title, tag, type) => {
+    cy.contains(title).click()
     if (version == '4.41.3')
         cy.get('button[title="Settings"]').click()
     else
         cy.get('button.post-settings').click()
-    // cy.get('.settings-menu-toggle').click()
 
     cy.get('#tag-input').type(tag +'{enter}')
+    
+    cy.wait(2000)
     cy.screenshot()
-    // cy.get('.settings-menu-toggle').click()
   
     if (version == '4.41.3')
         cy.get('button[title="Settings"]').click()
-        // cy.get('button.settings-menu-toggle.gh-btn.gh-btn-editor.gh-btn-icon.icon-only.gh-btn-action-icon').click()
     else
         cy.get('button.close.settings-menu-header-action').click()
 
+    if(type == 'published') {
+        cy.clickUpdate(version)
+    }
+    else if(type == 'draft'){
+        cy.clickPreview()
+    }        
+})
+
+Cypress.Commands.add('clickUpdate', (version) => {
     cy.contains('Update').click()
     if (version == '4.41.3')
         cy.get('button.gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view').click()
     else
         cy.get('button.gh-btn.gh-btn-blue.gh-publishmenu-button.gh-btn-icon.ember-view').click()
-    // cy.get('.gh-publishmenu-button').click()
     cy.wait(2000)
     cy.screenshot()		
+})
+
+Cypress.Commands.add('clickPreview', () => {
+    cy.get('button.gh-btn.gh-editor-preview-trigger').click() //Preview 
+    cy.wait(1000)
+    cy.get('button.gh-editor-back-button').click()
+    cy.wait(1000)
+    // cy.screenshot()		
 })
 
 Cypress.Commands.add('deletePage', (version, page) => {
@@ -180,12 +203,28 @@ Cypress.Commands.add('publishPage', (version) => {
     cy.wait(2000)
 })
 
-Cypress.Commands.add('featurePage', () => {
-    cy.get('button.post-settings').click()
-    // cy.get('[type="checkbox"].gh-input.post-settings-featured').check() //({ force: true}) 
-    cy.get('[type="checkbox"]').check()
+Cypress.Commands.add('featurePage', (version, excerpt) => {
+    if (version == '4.41.3')
+        cy.get('button[title="Settings"]').click() 
+    else
+        cy.get('button.post-settings').click()
+
+    // Timed out retrying after 4050ms: cy.check() failed because this element is not visible:
+    // <input class="gh-input post-settings-featured" type="checkbox">
+    // This element <input.gh-input.post-settings-featured> is not visible because it has CSS property: display: none 
+    cy.get('input[type="checkbox"].gh-input.post-settings-featured').check() // ({ force: true}) 
     cy.screenshot()
-    cy.get('button.close.settings-menu-header-action').click()
+
+    if (version == '4.41.3')
+        cy.get('button[title="Settings"]').click() 
+    else
+        cy.get('button.post-settings').click()
+    
+    cy.contains('Update').click()
+    if (version == '4.41.3')
+        cy.get('button.gh-btn.gh-btn-black.gh-publishmenu-button.gh-btn-icon.ember-view').click()
+    else
+	    cy.get('button.gh-btn.gh-btn-blue.gh-publishmenu-button.gh-btn-icon.ember-view').click()
     cy.wait(2000)
     cy.screenshot()
 })
@@ -236,13 +275,7 @@ Cypress.Commands.add('visitTags', () => {
 })
 
 //----------------------------------------------------------
-Cypress.Commands.add('listTags', () => {
-    //cy.visit('/ghost/#/posts/')
-    cy.get('a[href="#/tags/"]').click()
-    cy.url().should('include', 'posts')
-    cy.wait(2000)
-    cy.screenshot()
-})
+
 Cypress.Commands.add('listPost', () => {
     cy.visit('/ghost/#/posts/')
     cy.url().should('include', 'posts')
@@ -389,4 +422,45 @@ Cypress.Commands.add('deletePost', (version, post) => {
     cy.get('.gh-btn.gh-btn-red.gh-btn-icon.ember-view').children().contains('Delete').click()
     cy.wait(2000)
     // cy.get('.modal-footer .gh-btn:not(:first-child)').click()
+})
+
+
+Cypress.Commands.add('listTags', () => {
+    cy.visit('/ghost/#/tags/')
+    // cy.get('a[href="#/tags/"]').click()
+    // cy.url().should('include', 'tags')
+    cy.wait(1000)
+    cy.screenshot()
+})
+
+Cypress.Commands.add('listTagsAndCheck', (tag) => {
+    cy.wait(1000)
+    cy.visit('/ghost/#/tags/')
+    cy.url().should('include', 'tags')
+    cy.contains(tag)
+    cy.screenshot()
+})
+
+Cypress.Commands.add('newTag', () => {
+    cy.contains('New tag').click()
+    cy.url().should('include', 'tags/new')
+    cy.wait(1000)
+    cy.screenshot()	
+})
+
+Cypress.Commands.add('createTag', (version, name, desc) => {
+    // if (version == '4.41.3')
+    // cy.log('tag name: '+ name)
+    cy.get('input[id="tag-name"]').type(name)
+    cy.wait(1000)
+    cy.get('textarea[id="tag-description"]').type(desc)
+    cy.wait(1000)
+    cy.contains('Save').click()
+    cy.wait(2000)
+    cy.screenshot()
+})
+
+Cypress.Commands.add('clickLeaveButton', () => {
+    cy.contains('Leave').click()
+    cy.wait(2000)
 })

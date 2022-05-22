@@ -6,6 +6,8 @@
       "name"          : "Admin Ghost", 
       "email"         : "marlonagon@yahoo.com",
       "password"      : "prueb@sE2E-m1s0", 
+      "urlPagesAPI"   : "https://my.api.mockaroo.com/ghost_data.json?key=7e009e30", 
+
       "draftPage"     : "Cypress Test Page", 
       "scheduledPage" : "Cypress Test Page Scheduled", 
       "publishedPage" : "Cypress Test Page Published",
