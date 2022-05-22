@@ -1,4 +1,10 @@
-const { Given, When, Then, Before } = require("@cucumber/cucumber");
+const {
+  Given,
+  When,
+  Then,
+  Before,
+  SnippetsFormatter,
+} = require("@cucumber/cucumber");
 const expect = require("chai").expect;
 const fs = require("fs");
 const {
@@ -26,12 +32,12 @@ Then("I take a screenshot {string}", async function (id) {
   await this.driver.saveScreenshot(dir + "/" + id + ".png");
 });
 
-Given("I navigate to register page {kraken-string}", async function (baseUrl) {
+Given("I navigate to register page", async function () {
   let loginUrl = "";
-  if (baseUrl == "http://localhost:3001") {
-    loginUrl = `${baseUrl}/ghost/#/setup/two`;
+  if (BASE_URL == "http://localhost:3001") {
+    loginUrl = `${BASE_URL}/ghost/#/setup/two`;
   } else {
-    loginUrl = `${baseUrl}/ghost/#/setup/`;
+    loginUrl = `${BASE_URL}/ghost/#/setup/`;
   }
   await this.driver.url(`${loginUrl}`);
 });
@@ -265,6 +271,14 @@ When("I enter new site title {kraken-string}", async function (siteTitle) {
   let element = await this.driver.$('(//input[@id="blog-title"])[1]');
   return await element.setValue(siteTitle);
 });
+
+When(
+  /^I enter new site title Scenario Outline "([^"]*)"$/,
+  async function (siteTitle) {
+    let element = await this.driver.$('(//input[@id="blog-title"])[1]');
+    return await element.setValue(siteTitle);
+  }
+);
 
 When("I enter new user fullname {kraken-string}", async function (fullname) {
   let element = await this.driver.$('(//input[@id="name"])[1]');
