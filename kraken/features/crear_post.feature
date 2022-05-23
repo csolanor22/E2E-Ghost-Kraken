@@ -1,7 +1,7 @@
 Feature: Crear Post y publicar
 
 @user1 @web
-Scenario: Crear con título máximo caracteres sin publicar
+Scenario: Crear Post con título frontera + 1 sin publicar
     Given I navigate to signin page "<BASE_URL>"
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"
@@ -24,7 +24,7 @@ Scenario: Crear con título máximo caracteres sin publicar
 
 
 @user2 @web
-Scenario: Crear con body máximo caracteres sin publicar
+Scenario: Crear Post con título frontera sin publicar
     Given I navigate to signin page "<BASE_URL>"
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"
@@ -47,7 +47,7 @@ Scenario: Crear con body máximo caracteres sin publicar
 
 
 @user3 @web
-Scenario: Crear con body máximo caracteres publicando
+Scenario: Crear Post con título frontera publicando
     Given I navigate to signin page "<BASE_URL>"
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"
@@ -76,7 +76,7 @@ Scenario: Crear con body máximo caracteres publicando
 
 
 @user4 @web
-Scenario: Crear con título máximo caracteres 255
+Scenario: Post con título frontera publicando
     Given I navigate to signin page "<BASE_URL>"
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"
@@ -106,7 +106,7 @@ Scenario: Crear con título máximo caracteres 255
     And I wait for 5 seconds
 
 @user5 @web
-Scenario: Crear con título máximo caracteres 254
+Scenario: Crear Post con título frontera - 1 publicando
     Given I navigate to signin page "<BASE_URL>"
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"

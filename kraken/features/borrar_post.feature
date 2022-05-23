@@ -57,7 +57,7 @@ Scenario: Crear post y delete post cancelar
     And I wait for 2 seconds
     And I click on delete post
     And I wait for 2 seconds
-    And I click on confirm delete post
+    And I click on cancel delete post
     And I wait for 4 seconds
     Then I navigate to base URL "<BASE_URL>"
     And I wait for 2 seconds

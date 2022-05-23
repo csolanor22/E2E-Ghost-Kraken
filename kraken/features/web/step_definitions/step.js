@@ -402,3 +402,31 @@ When("I click on cancel delete post", async function () {
   let element = await this.driver.$("div.modal-footer > button:nth-child(1) > span");
   return await element.setValue(faker.datatype.string(254));
 });
+
+
+When("I click in Pages", async function () {
+  let element = await this.driver.$("ul.gh-nav-list.gh-nav-manage > li:nth-child(2)");
+  return await element.click();
+});
+
+
+When("I click on New Page button", async function () {
+  let element = await this.driver.$("(//span[normalize-space()='New page'])[1]");
+  return await element.click();
+});
+
+When("I click link to return to Page", async function () {
+  let element = await this.driver.$("div.ml3.mobile.flex.items-center > a");
+  return await element.click();
+});
+
+When("I enter ramdom text into page body", async function () {
+  let element = await this.driver.$(".__has-no-content > p:nth-child(1)");
+  return await element.setValue(faker.lorem.paragraphs(10));
+});
+
+When("I enter text into field page title", async function () {
+    let element = await this.driver.$(".gh-editor-title");
+    return await element.setValue(faker.name.firstName());
+  }
+);

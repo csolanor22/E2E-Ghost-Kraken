@@ -45,17 +45,28 @@ Funcionalidades y escenarios:
   - Crear un usuario administrador de forma no exitosa con un correo inválido
   - Crear un usuario administrador de forma no exitosa sin título del sitio
 - Ingresar a la aplicacion:
-  - Login exitoso y Logout
-  - Login erroneo por password incorrecto
-  - Login erroneo por username inexistente en DB
+  - Login fallido por mail erroneo
+  - Login fallido por mail vacio
+  - Login fallido por password vacio
+  - Login fallido por password erroneo
+  - Login fallido por mail y password vacío
 - Administración Post
   - Listar Post
-  - Crear post sin publicar
-  - Crear post y publicar
-  - Crear post y publicar 2 minutos después
-  - Actualizar un post
-  - Crear un post y eliminar el post
-  - Crear post, publicar y quitar publicación.
+  - Crear Post con título frontera + 1 sin publicar
+  - Crear Post con título frontera sin publicar
+  - Crear Post con título frontera publicando
+  - Crear Post con título frontera - 1 publicando
+  - Update post con título frontera + 1 sin publicar
+  - Update post con título máximo caracteres 255
+  - Update post con título máximo caracteres 254
+  - Update post con body generado
+  - Crear post y delete post confirmar
+  - Crear post y delete post cancelar
+- Administración de Pages
+  - Crear Page con título frontera + 1
+  - Crear Page con título frontera
+  - Crear Page con título frontera - 1
+  - Crear Page exitoso datos aleatorios en body y publicar
 
 Intrucciones para ejecutar las pruebas creadas con Kraken:
 
