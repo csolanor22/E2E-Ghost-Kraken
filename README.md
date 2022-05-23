@@ -337,6 +337,8 @@ La implementación de las estrategias a nivel de cypress se puede revisar en el 
 
 **Pool de datos apriori**
 
+**Implementación en Cypress**
+
 La estrategia pool de datos apriori se implementó utilizando esquemas Mockaroo, por ejemplo `ghost-data` con la siguiente definición: 
 
 ![mockaroo-apriori-data-pool](https://user-images.githubusercontent.com/98719877/169727100-655658ff-b7bd-4794-8eb6-16b2f0bc8c3e.png)
@@ -373,6 +375,47 @@ Un ejemplo de implementación en un escenario de prueba:
           // cy.clickLeaveButton()
         })
 ```
+**Implementación en Kraken**
+
+Con Kraken se crearon 30+ escenarios con pool de datos apriori, haciendo uso de la opción de Scenario Outline. Puede ver ejemplos de la implementación en la carpeta kraken/features/1_crear_admin_negativo.feature
+
+Principalmente se usaron estos datos para pruebas de escenarios negativos. Ejemplo de esto es:
+
+```
+@user5 @web
+Scenario Outline: Creacion de usuario - escenarios negativos con datos inválidos usando Scenario Outline
+    Given I navigate to register page
+    And I wait for 2 seconds 
+    When I enter new site title "<site_title>"
+    And I enter new user fullname "<new_user_fullname>"
+    And I enter sign up email "<mail>"
+    And I enter new password "<password>"
+    Then I click signup
+    And I wait for 1 seconds
+    And I expect error message "<invalid_msg>"
+
+Examples:
+    | site_title | new_user_fullname | mail | password | invalid_msg | scenario_description |
+    | Mi nuevo sitio | Pepito Perez  | invalidEmail  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | invalidEmail@  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | invalidEmail@a  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | invalidEmail@a.  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | @mail.com  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | 1234  | Password must be at least 10 characters long | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | asdf12345 | Password must be at least 10 characters long | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | password123  | Sorry, you cannot use an insecure password | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | 1234567890  | Sorry, you cannot use an insecure password | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | qwertyuiop  | Sorry, you cannot use an insecure password | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | 0987654321  | Sorry, you cannot use an insecure password | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | abcdefghij  | Sorry, you cannot use an insecure password | |
+    | Este es un titulo demasiado largo: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut mollis dui, convallis pulvinar tortor. Nam ante libero, semper semper justo nec, ultricies consectetur ante. Aliquam sit amet mattis mi, at sollicitudin diam. Praesent urna dolor, pretium et felis id, commodo egestas augue. Nunc sed erat vel justo commodo finibus pulvinar sit amet mi. Integer sodales sem non nisl efficitur volutpat. Cras sed varius nisl, eget tempor leo. Pellentesque vestibulum, lacus sit amet volutpat luctus, elit mi venenatis purus, vitae tempus diam velit eget orci. Morbi elementum porta urna. Maecenas vehicula leo leo, at tincidunt sapien feugiat quis. Nam libero erat, bibendum vel efficitur sit amet, lobortis et ante. Suspendisse potenti. Sed id imperdiet nulla. Morbi sodales augue ac metus suscipit vehicula. | Pepito Perez  | user123@mail.com  | User-12345  | Title is too long | |
+    | Este es un titulo que tiene 151 caracteres, lo que está por encima de limite permitido. El limite maximo es de 150 caracteres. Este es un escenario neg | Pepito Perez  | user123@mail.com  | User-12345 | Title is too long  | |
+    | Mi nuevo sitio | Este es un nombre de usuario que tiene 191 caracteres, lo cual está 1 por encima de límite máximo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis sollicitudin ipsum, iddander | user123@mail.com  | User-12345  | exceeds maximum length of 191 characters. users.name | |
+    | Mi nuevo sitio | Este es un nombre demasiado largo: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut mollis dui, convallis pulvinar tortor. Nam ante libero, semper semper justo nec, ultricies consectetur ante. Aliquam sit amet mattis mi, at sollicitudin diam. Praesent urna dolor, pretium et felis id, commodo egestas augue. Nunc sed erat vel justo commodo finibus pulvinar sit amet mi. Integer sodales sem non nisl efficitur volutpat. Cras sed varius nisl, eget tempor leo. Pellentesque vestibulum, lacus sit amet volutpat luctus, elit mi venenatis purus, vitae tempus diam velit eget orci. Morbi elementum porta urna. Maecenas vehicula leo leo, at tincidunt sapien feugiat quis. Nam libero erat, bibendum vel efficitur sit amet, lobortis et ante. Suspendisse potenti. Sed id imperdiet nulla. Morbi sodales augue ac metus suscipit vehicula. | user123@mail.com  | User-12345  | exceeds maximum length of 191 characters. users.name | |
+    | Mi nuevo sitio | Pepito Perez  | esteEsUnCorreoDemasiadoLargoEsteEsUnCorreoDemasiadoLargoEsteEsUnCorreoDemasiadoLargoEsteEsUnCorreoDemasiadoLargo@hotmail.com  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | EsteEsUnCorreoDemasiadoLargoQueExcede77CaracteresLoMaximoPermitido@hotmail.com  | User-12345  | Invalid Email. | |
+```
+
 
 **Pool de datos pseudo aleatorio dinámico**
 

@@ -7,6 +7,8 @@ const {
 } = require("@cucumber/cucumber");
 const expect = require("chai").expect;
 const fs = require("fs");
+const { faker } = require('@faker-js/faker');
+
 const {
   SHORT_VERSION_V3,
   SHORT_VERSION_V4,
@@ -57,14 +59,8 @@ When("I enter email {kraken-string}", async function (email) {
 });
 
 When(
-  "I enter password {kraken-string} {kraken-string}",
-  async function (password, baseUrl) {
-    let element = "";
-    if (baseUrl == "http://localhost:3001") {
-      element = await this.driver.$("#ember10");
-    } else {
-      element = await this.driver.$("#ember9");
-    }
+  "I enter password {kraken-string}",async function (password) {
+    let element = await this.driver.$(".gh-icon-lock > input:nth-child(1)");
     return await element.setValue(password);
   }
 );
@@ -332,3 +328,72 @@ Then(
     }
   }
 );
+
+When("I enter random email", async function () {
+  let element = await this.driver.$(".gh-icon-mail > input:nth-child(1)");
+  return await element.setValue(faker.datatype.string(192));
+});
+
+When("I enter random password", async function () {
+  let element = await this.driver.$(".gh-icon-lock > input:nth-child(1)");
+  return await element.setValue(faker.internet.password());
+});
+
+When("I Send login data", async function () {
+  let element = await this.driver.$(".gh-btn-login");
+  return await element.click();
+});
+ 
+When("I wait an error message", async function () {
+  let element = await this.driver.$(".main-error").getText();
+  expect(element).not.to.equal(null);
+});
+
+When("I enter random text into field post title max", async function () {
+    let element = await this.driver.$(".gh-editor-title");
+    return await element.setValue(faker.datatype.string(256));
+  }
+);
+
+When("I enter ramdom text into post body max", async function () {
+  let element = await this.driver.$(".__has-no-content > p:nth-child(1)");
+  return await element.setValue(faker.datatype.string(2001));
+}
+);
+
+When("I click span for publish", async function () {
+    let element = await this.driver.$("(//span[normalize-space()='Publish'])[1]");
+    return await element.click();
+});
+
+When("I click Publish Button", async function () {
+  let element = await this.driver.$(".gh-publishmenu-button");
+  return await element.click();
+});
+
+Then("I cant find publish span", async function () {
+  let element = await this.driver.$("(//span[normalize-space()='Publish'])[1]");
+  expect(element).undefined();
+});
+
+
+When("I confirm post publish", async function () {
+  let element = await this.driver.$(".gh-btn-black");
+  return await element.click();
+});
+
+
+When("I click into post title", async function () {
+  let element = await this.driver.$(".gh-editor-title");
+    return element.click();
+});
+
+When("I enter random text into field post title max 255", async function () {
+  let element = await this.driver.$(".gh-editor-title");
+  return await element.setValue(faker.datatype.string(255));
+});
+
+When("I enter random text into field post title max 254", async function () {
+  let element = await this.driver.$(".gh-editor-title");
+  return await element.setValue(faker.datatype.string(254));
+});

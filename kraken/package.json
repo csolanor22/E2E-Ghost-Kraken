@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "faker": "^6.6.6",
     "kraken-node": "^1.0.24"
   },
   "devDependencies": {
