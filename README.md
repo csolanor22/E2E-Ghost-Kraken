@@ -150,43 +150,42 @@ Scenario: Creacion de usuario con email inválido
 
 - clonar este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git`
 - entrar desde la consola a la carpeta creada al clonar el repositorio E2E-Ghost-Kraken
-- ejecutar el comando `npm install cypress --save-dev`
-
-- antes de ejecutar pruebas sobre ghost 3.41.1, configurar el archivo cypress.json
-
+- instalar cypress y faker ejecutando los comandos 
 ```
-...
-    "baseUrl": "http://localhost:3001",
-    "env": {
-      "ghost-version" : "3.41.1",
-...
+npm install cypress --save-dev
+npm install @faker-js/faker --save-dev
 ```
 
-- antes de ejecutar pruebas sobre ghost 4.41.3, configurar el archivo cypress.json
+- antes de ejecutar pruebas de estrategia de datos sobre ghost 4.41.3, configurar el archivo `cypress.json`
 
 ```
 ...
     "baseUrl": "http://localhost:3002",
     "env": {
       "ghost-version" : "4.41.3",
+      ...
+      "urlPagesAPI"   : "https://my.api.mockaroo.com/ghost_data.json?key=7e009e30", 
 ...
 ```
-  - ejecutar todas las pruebas con el comando 
+  - ejecutar todas las pruebas de estrategia de datos con el comando 
 ```
-  node_modules\.bin\cypress run --headless --spec "cypress/integration/*.spec.js"
+  node_modules\.bin\cypress run --headless --spec "cypress/integration/data-*.spec.js"
 ```
-  **Nota**: con el anterior comando se incluye la ejecución de las pruebas VRT `vrt.spec.js`. 
-  
+
   - El resultado de las pruebas debe verse así:  
 
-![cypress-tests-finished](https://user-images.githubusercontent.com/98719877/168498434-42724356-29f8-4f0a-8dbd-31387ba245dc.png)
+![cypress-data-tests-finished](https://user-images.githubusercontent.com/98719877/169726938-be4c89ee-561e-49b1-a5de-cea34c5c439a.png)
+
+  - nota: para las pruebas VRT, ejecutar el siguiente con el comando 
+```
+  node_modules\.bin\cypress run --headless --spec "cypress/integration/vrt.spec.js"
+```
 
   - con el proposito de preparar las pruebas VRT, al final de las pruebas de cada versión, copie en la ruta `vrt`, las capturas de pantalla ubicadas en la ruta `cypress\screenshots\vrt.spec.js` y renonmbre las carpetas de la siguiente manera, dependiendo de la versión: 
 ```
   vrt\cypress\screenshots-3.41.1\vrt.spec.js
   vrt\cypress\screenshots-4.41.3\vrt.spec.js
 ```
-=======
 
 - en la ruta cypress\screenshots puede revisar las capturas de pantalla generadas durante la prueba
 
@@ -296,21 +295,184 @@ Visual Regression Tests
 
 **Intrucciones para para configurar y ejecutar las VRT con Resemble.js** 
 
-- Abrir terminal para crear un proyecto de Node.js donde se alojará el código de las pruebas VRT. 
-- Cambiar al directorio donde va a trabajar
-- Crear un subdirectorio y ubíquese en él.
-- Ejecutar comando `npm init`, se le solicitará  información para crear el archivo package.json
-- Copiar en la raiz del nuevo proyecto los archivos `index.js` y `config.json` descargados del repositorio, ubicados en la ruta vrt
-- Instalar las dependencias
+- Para generar este reporte ya se deben haber ejecutado las pruebas de Kraken y Cypress para tener las capturas de pantalla necesarias
+- Instalar las dependencias desde el directorio raíz del repositorio
 ```
 npm install playwright
 npm install resemblejs
 ```
-- Ejecutar la prueba VRT con el comando 
+- Ejecutar la prueba VRT desde la carpeta raíz del repositorio con el comando:
 ```
 node resemble.js
-node index.js
 ```
 - Revisar el reporte generado: Las imágenes resultado de la comparación que realiza resemble se encuentran en la carpeta ./results. 
-- Dentro de esta carpeta results, se genera una carpeta con cada set de comparaciones hecha.
-- 
+- Dentro de esta carpeta results, se genera una carpeta con las imágenes de cada set de comparaciones hecha y el reporte llamado report.html
+- Por ejemplo ver el reporte: E2E-Ghost-Kraken/results/2022-05-16T03.49.53.570Z/report.html
+
+
+Estrategias y herramientas para generación de datos
+---------------------------------------------------
+
+La implementación de las estrategias a nivel de cypress se puede revisar en el archivo `cypress/support/Data.js`, el cual expone funciones que se utilizan al inicio de los escenarios de pruebas, dependiendo de la estrategia a utilizar. 
+
+**Pool de datos apriori**
+
+**Implementación en Cypress**
+
+La estrategia pool de datos apriori se implementó utilizando esquemas Mockaroo, por ejemplo `ghost-data` con la siguiente definición: 
+
+![mockaroo-apriori-data-pool](https://user-images.githubusercontent.com/98719877/169727100-655658ff-b7bd-4794-8eb6-16b2f0bc8c3e.png)
+
+Luego se exportó a un archivo json, el cual se ubicó en la ruta `cypress/fixtures/` para ser cargado desde los spec files:
+
+```
+	const aprioriDataPool = require('../fixtures/ghost-data.json');
+```
+
+Para extrer un registro aleatorio del data pool (tanto para el apriori como para el pseudo aleatorio), se utiliza la función `getRandomDataPool`, la cual se apoya en la libreria faker: 
+
+```
+  getRandomDataPool(dataPool) {
+    **let idx = faker.datatype.number({'min': 0, 'max': dataPool.length-1}, 1)**
+    cy.log(dataPool.length, idx, dataPool[idx].email, dataPool[idx].title)
+    cy.wait(2000)
+    return dataPool[idx];
+  }
+```
+
+Un ejemplo de implementación en un escenario de prueba: 
+```
+		context('When admin tries to create new member with apriori data pool strategy', () => {
+			beforeEach(() => {
+				**member = data.getRandomDataPool(aprioriDataPool)**
+				cy.newMember()
+			}) 
+
+			it('and input spaces, then admin sees error message and member was not created', () => {
+          cy.createMember(' ', ' ', ' ')
+          cy.checkMemberEmailError()
+          cy.listMembers()
+          // cy.clickLeaveButton()
+        })
+```
+**Implementación en Kraken**
+
+Con Kraken se crearon 30+ escenarios con pool de datos apriori, haciendo uso de la opción de Scenario Outline. Puede ver ejemplos de la implementación en la carpeta kraken/features/1_crear_admin_negativo.feature
+
+Principalmente se usaron estos datos para pruebas de escenarios negativos. Ejemplo de esto es:
+
+```
+@user5 @web
+Scenario Outline: Creacion de usuario - escenarios negativos con datos inválidos usando Scenario Outline
+    Given I navigate to register page
+    And I wait for 2 seconds 
+    When I enter new site title "<site_title>"
+    And I enter new user fullname "<new_user_fullname>"
+    And I enter sign up email "<mail>"
+    And I enter new password "<password>"
+    Then I click signup
+    And I wait for 1 seconds
+    And I expect error message "<invalid_msg>"
+
+Examples:
+    | site_title | new_user_fullname | mail | password | invalid_msg | scenario_description |
+    | Mi nuevo sitio | Pepito Perez  | invalidEmail  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | invalidEmail@  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | invalidEmail@a  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | invalidEmail@a.  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | @mail.com  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | 1234  | Password must be at least 10 characters long | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | asdf12345 | Password must be at least 10 characters long | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | password123  | Sorry, you cannot use an insecure password | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | 1234567890  | Sorry, you cannot use an insecure password | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | qwertyuiop  | Sorry, you cannot use an insecure password | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | 0987654321  | Sorry, you cannot use an insecure password | |
+    | Mi nuevo sitio | Pepito Perez  | user123@mail.com  | abcdefghij  | Sorry, you cannot use an insecure password | |
+    | Este es un titulo demasiado largo: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut mollis dui, convallis pulvinar tortor. Nam ante libero, semper semper justo nec, ultricies consectetur ante. Aliquam sit amet mattis mi, at sollicitudin diam. Praesent urna dolor, pretium et felis id, commodo egestas augue. Nunc sed erat vel justo commodo finibus pulvinar sit amet mi. Integer sodales sem non nisl efficitur volutpat. Cras sed varius nisl, eget tempor leo. Pellentesque vestibulum, lacus sit amet volutpat luctus, elit mi venenatis purus, vitae tempus diam velit eget orci. Morbi elementum porta urna. Maecenas vehicula leo leo, at tincidunt sapien feugiat quis. Nam libero erat, bibendum vel efficitur sit amet, lobortis et ante. Suspendisse potenti. Sed id imperdiet nulla. Morbi sodales augue ac metus suscipit vehicula. | Pepito Perez  | user123@mail.com  | User-12345  | Title is too long | |
+    | Este es un titulo que tiene 151 caracteres, lo que está por encima de limite permitido. El limite maximo es de 150 caracteres. Este es un escenario neg | Pepito Perez  | user123@mail.com  | User-12345 | Title is too long  | |
+    | Mi nuevo sitio | Este es un nombre de usuario que tiene 191 caracteres, lo cual está 1 por encima de límite máximo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis sollicitudin ipsum, iddander | user123@mail.com  | User-12345  | exceeds maximum length of 191 characters. users.name | |
+    | Mi nuevo sitio | Este es un nombre demasiado largo: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut mollis dui, convallis pulvinar tortor. Nam ante libero, semper semper justo nec, ultricies consectetur ante. Aliquam sit amet mattis mi, at sollicitudin diam. Praesent urna dolor, pretium et felis id, commodo egestas augue. Nunc sed erat vel justo commodo finibus pulvinar sit amet mi. Integer sodales sem non nisl efficitur volutpat. Cras sed varius nisl, eget tempor leo. Pellentesque vestibulum, lacus sit amet volutpat luctus, elit mi venenatis purus, vitae tempus diam velit eget orci. Morbi elementum porta urna. Maecenas vehicula leo leo, at tincidunt sapien feugiat quis. Nam libero erat, bibendum vel efficitur sit amet, lobortis et ante. Suspendisse potenti. Sed id imperdiet nulla. Morbi sodales augue ac metus suscipit vehicula. | user123@mail.com  | User-12345  | exceeds maximum length of 191 characters. users.name | |
+    | Mi nuevo sitio | Pepito Perez  | esteEsUnCorreoDemasiadoLargoEsteEsUnCorreoDemasiadoLargoEsteEsUnCorreoDemasiadoLargoEsteEsUnCorreoDemasiadoLargo@hotmail.com  | User-12345  | Invalid Email. | |
+    | Mi nuevo sitio | Pepito Perez  | EsteEsUnCorreoDemasiadoLargoQueExcede77CaracteresLoMaximoPermitido@hotmail.com  | User-12345  | Invalid Email. | |
+```
+
+
+**Pool de datos pseudo aleatorio dinámico**
+
+La estrategia pool de datos pseudo aleatorio se implementó utilizando una mock API Mockaroo generada a partir del esquema `ghost-data`: 
+
+![mockaroo-pseudo-random-data-pool](https://user-images.githubusercontent.com/98719877/169727145-4bce4b2e-aa80-436e-8f1d-02a0462b7299.png)
+
+La url se configuró en la propiedad urlPagesAPI del archivo `cypress.json`
+```
+      "urlPagesAPI"   : "https://my.api.mockaroo.com/ghost_data.json?key=7e009e30", 
+```
+
+Y se invoca al inicio de las pruebas a través de la función getPseudoRandomDataPool de `cypress/support/Data.js`
+```
+  getPseudoRandomDataPool(urlAPI) {
+    let dataPool = {};
+    Cypress.$.ajax({
+      async: false,
+      url: urlAPI,
+      responseType:'application/json',
+      success: function(data) {dataPool = data;},
+      error: function(xhr, status, error) { console.log(`getPseudoRandomDataPool error: ${urlAPI} \n${error}`); }
+    });
+    return dataPool;
+  }
+```
+
+desde cada uno de los spec files
+```
+	const pseudoRandomDataPool = data.getPseudoRandomDataPool(Cypress.env('urlPagesAPI'));
+```
+
+Para extrer un registro aleatorio del data pool (tanto para el apriori como para el pseudo aleatorio), se utiliza la función `getRandomDataPool` descrita en la estrategia anterior. 
+
+Un ejemplo de implementación en un escenario de prueba: 
+```
+		context('When admin tries to create new member with pseudo random data pool strategy', () => {
+			beforeEach(() => {
+				**member = data.getRandomDataPool(pseudoRandomDataPool)**
+				cy.newMember()
+			}) 
+	
+			it('and input not valid email border-1, then admin sees error message and member was not created', () => {
+				cy.createMember(' ', member.text190, ' ')
+				cy.checkMemberEmailError()
+				cy.listMembers()
+				cy.clickLeaveButton()
+			})
+```
+
+**Escenario aleatorio**
+
+Por último, la estrategia de escenario aleatorio se implementó con el apoyo de la librería faker y se utiliza en las siguientes funciones: 
+
+```
+  getRandomData() {
+    return {title: faker.lorem.words(), description:faker.lorem.paragraphs()}; 
+  }
+...
+  getRandomWords(num){
+    return faker.lorem.words(num); 
+  }
+```
+
+Un ejemplo de implementación en un escenario de prueba: 
+```
+		context('When admin creates new page with random data strategy', () => {
+			beforeEach(() => {
+				**page = data.getRandomData();**
+				title = page.title;
+				desc = page.description;
+				cy.newPage()
+				cy.createPage(version, title, desc)
+			}) 
+
+			it('Then admin sees new draft page in list and can delete it', () => {
+				cy.listPagesAndCheck(title);
+				cy.filterDraftPages()
+			})
+```

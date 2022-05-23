@@ -461,6 +461,6 @@ Cypress.Commands.add('createTag', (version, name, desc) => {
 })
 
 Cypress.Commands.add('clickLeaveButton', () => {
-    cy.contains('Leave').click()
+    cy.contains('Leave').click({ force: true})
     cy.wait(2000)
 })

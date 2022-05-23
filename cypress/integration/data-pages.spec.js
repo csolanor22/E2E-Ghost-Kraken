@@ -191,14 +191,13 @@ describe('ghost admin - data strategies e2e tests', () => {
 
 				cy.listTags()
 				cy.newTag()
-				cy.createTag(version, tag.text191,  tag.desc501)
+				cy.createTag(version, tag.text191,  tag.desc501+version)
 				cy.contains('cannot be longer than 500')
 
 				cy.listPages()
 				cy.clickLeaveButton()
 				cy.newPage()
 				cy.createPage(version, title, desc)
-				cy.log('beforeEach DONE')
 			})
 
 			it('Then admin sees new draft page in list and can delete it', () => {

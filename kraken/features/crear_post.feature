@@ -1,36 +1,35 @@
-Feature: Crear Post y publicar escenarios positivos
+Feature: Crear Post y publicar
 
 @user1 @web
-Scenario: Login - Crear post sin publicar - Logout
+Scenario: Crear con título máximo caracteres sin publicar
     Given I navigate to signin page "<BASE_URL>"
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"
     And I wait for 1 seconds
-    And I enter password "<PASSWORD1>" "<BASE_URL>"
+    And I enter password "<PASSWORD1>"
     And I click Sign in "<BASE_URL>"
     And I wait for 2 seconds
     And I click in Posts "<BASE_URL>"
     And I wait for 2 seconds
     And I click on New Post button
     And I wait for 2 seconds
-    And I enter text "$name_1" into field post title
+    And I enter random text into field post title max
     And I wait for 2 seconds
     And I click into post body
     And I wait for 2 seconds
     And I enter text "$string_1" into post body
     And I wait for 2 seconds
     And I click link to return to Posts "<BASE_URL>"
-    And I wait for 2 seconds
-    And I navigate to base URL "<BASE_URL>"
     Then I wait for 2 seconds
+
 
 @user2 @web
-Scenario: Login -  Crear post y publicar - Logout
+Scenario: Crear con body máximo caracteres sin publicar
     Given I navigate to signin page "<BASE_URL>"
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"
     And I wait for 1 seconds
-    And I enter password "<PASSWORD1>" "<BASE_URL>"
+    And I enter password "<PASSWORD1>"
     And I click Sign in "<BASE_URL>"
     And I wait for 2 seconds
     And I click in Posts "<BASE_URL>"
@@ -41,25 +40,19 @@ Scenario: Login -  Crear post y publicar - Logout
     And I wait for 2 seconds
     And I click into post body
     And I wait for 2 seconds
-    And I enter text "$string_1" into post body
-    And I wait for 2 seconds
-    And I click span for publish "<BASE_URL>"
-    And I wait for 2 seconds
-    And I click on set it live now "<BASE_URL>"
-    And I click Publish Button "<BASE_URL>"
+    And I enter ramdom text into post body max
     And I wait for 2 seconds
     And I click link to return to Posts "<BASE_URL>"
-    And I wait for 2 seconds
-    And I navigate to base URL "<BASE_URL>"
     Then I wait for 2 seconds
 
+
 @user3 @web
-Scenario: Crear post, publicar y quitar publicación
+Scenario: Crear con body máximo caracteres publicando
     Given I navigate to signin page "<BASE_URL>"
     And I wait for 1 seconds
     When I enter email "<USERNAME1>"
     And I wait for 1 seconds
-    And I enter password "<PASSWORD1>" "<BASE_URL>"
+    And I enter password "<PASSWORD1>"
     And I click Sign in "<BASE_URL>"
     And I wait for 2 seconds
     And I click in Posts "<BASE_URL>"
@@ -70,27 +63,74 @@ Scenario: Crear post, publicar y quitar publicación
     And I wait for 2 seconds
     And I click into post body
     And I wait for 2 seconds
+    And I enter ramdom text into post body max
+    And I wait for 1 seconds
+    And I click span for publish
+    And I wait for 1 seconds
+    And I click Publish Button
+    And I wait for 1 seconds
+    And I confirm post publish
+    And I wait for 1 seconds
+    And I click link to return to Posts "<BASE_URL>"
+    And I wait for 5 seconds
+
+
+@user4 @web
+Scenario: Crear con título máximo caracteres 255
+    Given I navigate to signin page "<BASE_URL>"
+    And I wait for 1 seconds
+    When I enter email "<USERNAME1>"
+    And I wait for 1 seconds
+    And I enter password "<PASSWORD1>"
+    And I click Sign in "<BASE_URL>"
+    And I wait for 2 seconds
+    And I click in Posts "<BASE_URL>"
+    And I wait for 2 seconds
+    And I click on New Post button
+    And I wait for 2 seconds
+    And I enter random text into field post title max 255
+    And I wait for 2 seconds
+    And I click into post body
+    And I wait for 2 seconds
     And I enter text "$string_1" into post body
     And I wait for 2 seconds
-    And I click span for publish "<BASE_URL>"
+    And I click into post title
     And I wait for 2 seconds
-    And I click on set it live now "<BASE_URL>"
-    And I wait for 2 seconds
-    And I click Publish Button "<BASE_URL>"
-    And I wait for 2 seconds
+    And I click span for publish
+    And I wait for 1 seconds
+    And I click Publish Button
+    And I wait for 1 seconds
+    And I confirm post publish
+    And I wait for 1 seconds
     And I click link to return to Posts "<BASE_URL>"
+    And I wait for 5 seconds
+
+@user5 @web
+Scenario: Crear con título máximo caracteres 254
+    Given I navigate to signin page "<BASE_URL>"
+    And I wait for 1 seconds
+    When I enter email "<USERNAME1>"
+    And I wait for 1 seconds
+    And I enter password "<PASSWORD1>"
+    And I click Sign in "<BASE_URL>"
     And I wait for 2 seconds
-    And I select published posts
-    And I wait for 3 seconds
-    And I select the first post at list
+    And I click in Posts "<BASE_URL>"
     And I wait for 2 seconds
-    And I click span for publish "<BASE_URL>"
+    And I click on New Post button
     And I wait for 2 seconds
-    And I select unpublished
+    And I enter random text into field post title max 254
     And I wait for 2 seconds
-    And I click on update button
+    And I click into post body
     And I wait for 2 seconds
+    And I enter text "$string_1" into post body
+    And I wait for 2 seconds
+    And I click into post title
+    And I wait for 2 seconds
+    And I click span for publish
+    And I wait for 1 seconds
+    And I click Publish Button
+    And I wait for 1 seconds
+    And I confirm post publish
+    And I wait for 1 seconds
     And I click link to return to Posts "<BASE_URL>"
-    And I wait for 2 seconds
-    And I navigate to base URL "<BASE_URL>"
-    Then I wait for 2 seconds
+    And I wait for 5 seconds
