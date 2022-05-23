@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker'
-describe('ghost admin post', () => {
+describe('ghost admin post fronteras', () => {
 
 	const version = Cypress.env('ghost-version')
         const site = Cypress.env('site')
