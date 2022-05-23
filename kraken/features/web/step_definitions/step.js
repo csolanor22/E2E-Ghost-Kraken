@@ -240,7 +240,7 @@ When("I click on delete post", async function () {
 
 When("I click on confirm delete post", async function () {
   let element = await this.driver.$(
-    "(//span[normalize-space()='Delete post'])[1]"
+    "div.modal-footer > button:nth-child(2) > span"
   );
   return await element.click();
 });
@@ -395,5 +395,10 @@ When("I enter random text into field post title max 255", async function () {
 
 When("I enter random text into field post title max 254", async function () {
   let element = await this.driver.$(".gh-editor-title");
+  return await element.setValue(faker.datatype.string(254));
+});
+
+When("I click on cancel delete post", async function () {
+  let element = await this.driver.$("div.modal-footer > button:nth-child(1) > span");
   return await element.setValue(faker.datatype.string(254));
 });
