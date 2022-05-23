@@ -150,44 +150,42 @@ Scenario: Creacion de usuario con email inválido
 
 - clonar este repositorio ejecutando en su consola el comando `git clone https://github.com/csolanor22/E2E-Ghost-Kraken.git`
 - entrar desde la consola a la carpeta creada al clonar el repositorio E2E-Ghost-Kraken
-- ejecutar el comando `npm install cypress --save-dev`
-
-- antes de ejecutar pruebas sobre ghost 3.41.1, configurar el archivo cypress.json
-
+- instalar cypress y faker ejecutando los comandos 
 ```
-...
-    "baseUrl": "http://localhost:3001",
-    "env": {
-      "ghost-version" : "3.41.1",
-...
+npm install cypress --save-dev
+npm install @faker-js/faker --save-dev
 ```
 
-- antes de ejecutar pruebas sobre ghost 4.41.3, configurar el archivo cypress.json
+- antes de ejecutar pruebas de estrategia de datos sobre ghost 4.41.3, configurar el archivo `cypress.json`
 
 ```
 ...
     "baseUrl": "http://localhost:3002",
     "env": {
       "ghost-version" : "4.41.3",
+      ...
+      "urlPagesAPI"   : "https://my.api.mockaroo.com/ghost_data.json?key=7e009e30", 
 ...
 ```
-  - ejecutar todas las pruebas con el comando 
+  - ejecutar todas las pruebas de estrategia de datos con el comando 
 ```
   node_modules\.bin\cypress run --headless --spec "cypress/integration/data-*.spec.js"
-  
 ```
-  **Nota**: con el anterior comando se incluye la ejecución de las pruebas VRT `vrt.spec.js`. 
-  
+
   - El resultado de las pruebas debe verse así:  
 
-![cypress-tests-finished](https://user-images.githubusercontent.com/98719877/168498434-42724356-29f8-4f0a-8dbd-31387ba245dc.png)
+![cypress-data-tests-finished](https://user-images.githubusercontent.com/98719877/169726938-be4c89ee-561e-49b1-a5de-cea34c5c439a.png)
+
+  - nota: para las pruebas VRT, ejecutar el siguiente con el comando 
+```
+  node_modules\.bin\cypress run --headless --spec "cypress/integration/vrt.spec.js"
+```
 
   - con el proposito de preparar las pruebas VRT, al final de las pruebas de cada versión, copie en la ruta `vrt`, las capturas de pantalla ubicadas en la ruta `cypress\screenshots\vrt.spec.js` y renonmbre las carpetas de la siguiente manera, dependiendo de la versión: 
 ```
   vrt\cypress\screenshots-3.41.1\vrt.spec.js
   vrt\cypress\screenshots-4.41.3\vrt.spec.js
 ```
-=======
 
 - en la ruta cypress\screenshots puede revisar las capturas de pantalla generadas durante la prueba
 
@@ -310,3 +308,128 @@ node resemble.js
 - Revisar el reporte generado: Las imágenes resultado de la comparación que realiza resemble se encuentran en la carpeta ./results. 
 - Dentro de esta carpeta results, se genera una carpeta con las imágenes de cada set de comparaciones hecha y el reporte llamado report.html
 - Por ejemplo ver el reporte: E2E-Ghost-Kraken/results/2022-05-16T03.49.53.570Z/report.html
+
+
+Estrategias y herramientas para generación de datos
+---------------------------------------------------
+
+La implementación de las estrategias a nivel de cypress se puede revisar en el archivo `cypress/support/Data.js`, el cual expone funciones que se utilizan al inicio de los escenarios de pruebas, dependiendo de la estrategia a utilizar. 
+
+**Pool de datos apriori**
+
+La estrategia pool de datos apriori se implementó utilizando esquemas Mockaroo, por ejemplo `ghost-data` con la siguiente definición: 
+
+![mockaroo-apriori-data-pool](https://user-images.githubusercontent.com/98719877/169727100-655658ff-b7bd-4794-8eb6-16b2f0bc8c3e.png)
+
+Luego se exportó a un archivo json, el cual se ubicó en la ruta `cypress/fixtures/` para ser cargado desde los spec files:
+
+```
+	const aprioriDataPool = require('../fixtures/ghost-data.json');
+```
+
+Para extrer un registro aleatorio del data pool (tanto para el apriori como para el pseudo aleatorio), se utiliza la función `getRandomDataPool`, la cual se apoya en la libreria faker: 
+
+```
+  getRandomDataPool(dataPool) {
+    **let idx = faker.datatype.number({'min': 0, 'max': dataPool.length-1}, 1)**
+    cy.log(dataPool.length, idx, dataPool[idx].email, dataPool[idx].title)
+    cy.wait(2000)
+    return dataPool[idx];
+  }
+```
+
+Un ejemplo de implementación en un escenario de prueba: 
+```
+		context('When admin tries to create new member with apriori data pool strategy', () => {
+			beforeEach(() => {
+				**member = data.getRandomDataPool(aprioriDataPool)**
+				cy.newMember()
+			}) 
+
+			it('and input spaces, then admin sees error message and member was not created', () => {
+          cy.createMember(' ', ' ', ' ')
+          cy.checkMemberEmailError()
+          cy.listMembers()
+          // cy.clickLeaveButton()
+        })
+```
+
+**Pool de datos pseudo aleatorio dinámico**
+
+La estrategia pool de datos pseudo aleatorio se implementó utilizando una mock API Mockaroo generada a partir del esquema `ghost-data`: 
+
+![mockaroo-pseudo-random-data-pool](https://user-images.githubusercontent.com/98719877/169727145-4bce4b2e-aa80-436e-8f1d-02a0462b7299.png)
+
+La url se configuró en la propiedad urlPagesAPI del archivo `cypress.json`
+```
+      "urlPagesAPI"   : "https://my.api.mockaroo.com/ghost_data.json?key=7e009e30", 
+```
+
+Y se invoca al inicio de las pruebas a través de la función getPseudoRandomDataPool de `cypress/support/Data.js`
+```
+  getPseudoRandomDataPool(urlAPI) {
+    let dataPool = {};
+    Cypress.$.ajax({
+      async: false,
+      url: urlAPI,
+      responseType:'application/json',
+      success: function(data) {dataPool = data;},
+      error: function(xhr, status, error) { console.log(`getPseudoRandomDataPool error: ${urlAPI} \n${error}`); }
+    });
+    return dataPool;
+  }
+```
+
+desde cada uno de los spec files
+```
+	const pseudoRandomDataPool = data.getPseudoRandomDataPool(Cypress.env('urlPagesAPI'));
+```
+
+Para extrer un registro aleatorio del data pool (tanto para el apriori como para el pseudo aleatorio), se utiliza la función `getRandomDataPool` descrita en la estrategia anterior. 
+
+Un ejemplo de implementación en un escenario de prueba: 
+```
+		context('When admin tries to create new member with pseudo random data pool strategy', () => {
+			beforeEach(() => {
+				**member = data.getRandomDataPool(pseudoRandomDataPool)**
+				cy.newMember()
+			}) 
+	
+			it('and input not valid email border-1, then admin sees error message and member was not created', () => {
+				cy.createMember(' ', member.text190, ' ')
+				cy.checkMemberEmailError()
+				cy.listMembers()
+				cy.clickLeaveButton()
+			})
+```
+
+**Escenario aleatorio**
+
+Por último, la estrategia de escenario aleatorio se implementó con el apoyo de la librería faker y se utiliza en las siguientes funciones: 
+
+```
+  getRandomData() {
+    return {title: faker.lorem.words(), description:faker.lorem.paragraphs()}; 
+  }
+...
+  getRandomWords(num){
+    return faker.lorem.words(num); 
+  }
+```
+
+Un ejemplo de implementación en un escenario de prueba: 
+```
+		context('When admin creates new page with random data strategy', () => {
+			beforeEach(() => {
+				**page = data.getRandomData();**
+				title = page.title;
+				desc = page.description;
+				cy.newPage()
+				cy.createPage(version, title, desc)
+			}) 
+
+			it('Then admin sees new draft page in list and can delete it', () => {
+				cy.listPagesAndCheck(title);
+				cy.filterDraftPages()
+			})
+```
