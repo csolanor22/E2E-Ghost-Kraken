@@ -25,21 +25,18 @@ export class Data {
     return {title: faker.lorem.words(), description:faker.lorem.paragraphs()}; 
   }
 
+  getRandomDataMember(){
+    return {
+      name: faker.name.firstName() +' '+ faker.name.lastName(), 
+      name191: faker.datatype.string(191),
+      name192: faker.datatype.string(192),
+      email: faker.internet.email(),
+      note: faker.lorum.words()
+    }; 
+  }
+
   getRandomWords(num){
     return faker.lorem.words(num); 
   }
 
 }
-/*
-        cy.get('#first_3').scrollIntoView().focus().type
-        (faker.name.firstName())
-        (faker.name.lastName())
-        (faker.address.streetAddress())
-        (faker.address.city())
-        (faker.phone.phoneNumber())
-        (faker.company.companyName())
-        (faker.name.jobTitle())
-        (faker.internet.email())
-        (faker.lorem.paragraph())
-        select('Newspaper')
-//*/

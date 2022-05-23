@@ -173,7 +173,8 @@ Scenario: Creacion de usuario con email inválido
 ```
   - ejecutar todas las pruebas con el comando 
 ```
-  node_modules\.bin\cypress run --headless --spec "cypress/integration/*.spec.js"
+  node_modules\.bin\cypress run --headless --spec "cypress/integration/data-*.spec.js"
+  
 ```
   **Nota**: con el anterior comando se incluye la ejecución de las pruebas VRT `vrt.spec.js`. 
   
