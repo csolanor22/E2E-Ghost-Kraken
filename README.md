@@ -45,24 +45,16 @@ Funcionalidades y escenarios:
   - Crear un usuario administrador de forma no exitosa con un correo inválido
   - Crear un usuario administrador de forma no exitosa sin título del sitio
 - Ingresar a la aplicacion:
-  - Login fallido por mail erroneo
-  - Login fallido por mail vacio
-  - Login fallido por password vacio
-  - Login fallido por password erroneo
-  - Login fallido por mail y password vacío
+  - Login exitoso y Logout
+  - Login erroneo por password incorrecto
+  - Login erroneo por username inexistente en DB
 - Administración Post
   - Listar Post
-  - Crear con título máximo caracteres sin publicar
-  - Crear con body máximo caracteres sin publicar
-  - Crear con body máximo caracteres publicando
-  - Crear con título máximo caracteres 255
-  - Crear con título máximo caracteres 254
-  - Update post con título máximo caracteres 256
-  - Update post con título máximo caracteres 255
-  - Update post con título máximo caracteres 254
-  - Update post con body generado
-  - Crear post y delete post confirmar
-  - Crear post y delete post cancelar
+  - Crear post sin publicar
+  - Crear post y publicar
+  - Crear post y publicar 2 minutos después
+  - Actualizar un post
+  - Crear un post y eliminar el post
   - Crear post, publicar y quitar publicación.
 
 Intrucciones para ejecutar las pruebas creadas con Kraken:
@@ -118,24 +110,38 @@ Scenario: Creacion de usuario con email inválido
 
 - Administración Post
 
-  - Crear post borrador
-  - Crear post y programarlo
-  - Crear post y publicarlo
-  - Listar post
-  - Listar post borradores
-  - Listar post programados
-  - Listar post por antiguedad de publicación
-  - Listar post por antiguedad de actualización
-  - Actualizar post - titulo y contenido
-  - Actualizar post - agregar tag
-  - Eliminar post
+  - Crear post borrador con titulo y contenido valido (datos aleatorios)
+  - Crear post borrador con titulo de 1 caracter y descripción (datos aleatorios)
+  - Crear post borrador con titulo de 2 caracteres y descripcion (datos aleatorios)
+  - Crear post sin titulo y con descripcion (datos aleatorios)
+  - Crear post sin titulo y sin descripcion (datos fijos)
+  - Crear post titulo de 254 caracteres (datos aleatorios)
+  - Crear post titulo de 255 caracteres (datos aleatorios)
+  - Crear post titulo de 300 caracteres (datos aleatorios)
+  - Crear post insertando data generada de imagenes en titulo y contenido (datos aleatorios)
+  - Crear post insertando data generada de música en titulo y contenido (datos aleatorios)
+  - Creacion de post borrador, listar y eliminar (datos aleatorios)
+  - Creación de post programado, listar y eliminar (datos aleatorios)
+  - Creación de post, publicarlo, listarlo y eliminar (datos aleatorios)
+  - Creación de tag (frontera-1), post borrador, listarlo y eliminarlo (Pool datos)
+  - Creación de tag (frontera-1), post programado, listarlo y eliminarlo (Pool datos)
+  - Creación de tag (frontera-1), post, ´publicarlo, listarlo y eliminarlo (Pool datos)
+  - Creación de tag (frontera), post borrador, listarlo y eliminarlo (Pool datos)
+  - Creación de tag (frontera), post programado, listarlo y eliminarlo (Pool datos)
+  - Creación de tag (frontera), post, ´publicarlo, listarlo y eliminarlo (Pool datos)
 
 - Tags
 
-  - Listar Tags
-  - Crear un Tag
-  - Editar Tag
-  - Eliminar Tag
+  - Crear tag menos de 190 caracteres (Data Pool)
+  - Crear tag con 190 caracteres (Data pool)
+  - Crear tag con 191 caracteres (Data Pool)
+  - Crear tag con mas de 191 caracteres (Data Pool)
+  - Crear tag con 1 caracter (Data pool)
+  - Crear tag con 2 caracteres (Data pool)
+  - Crear tag sin titulo pero con descripcion (Data Pool)
+  - Crear tag con descripción menor a 500 caracteres (Data Pool)
+  - Crear tag con descripción igual a 500 caracteres (Data pool)
+  - Crear tag con más de 500 caracteres (Data Pool)
 
 - Administración Pages
   - Crear page borrador, listarla y eliminarla 
@@ -488,7 +494,7 @@ Por último, la estrategia de escenario aleatorio se implementó con el apoyo de
   }
 ```
 
-Un ejemplo de implementación en un escenario de prueba con Cypress: 
+Un ejemplo de implementación en un escenario de prueba: 
 ```
 		context('When admin creates new page with random data strategy', () => {
 			beforeEach(() => {
@@ -503,12 +509,4 @@ Un ejemplo de implementación en un escenario de prueba con Cypress:
 				cy.listPagesAndCheck(title);
 				cy.filterDraftPages()
 			})
-```
-
-Un ejemplo de implementación en un escenario de prueba con Kraken: 
-```
-		When("I enter ramdom text into post body max", async function () {
-      let element = await this.driver.$(".__has-no-content > p:nth-child(1)");
-      return await element.setValue(faker.datatype.string(2001));
-    });
 ```
