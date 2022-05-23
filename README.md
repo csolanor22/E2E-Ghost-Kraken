@@ -130,21 +130,41 @@ Scenario: Creacion de usuario con email inválido
   - Eliminar Tag
 
 - Administración Pages
-  - Crear page borrador
-  - Crear page y programarla
-  - Crear page y publicarla
-  - Listar pages
-  - Listar pages borrador
-  - Listar pages programadas
-  - Listar pages por antiguedad de publicación
-  - Listar pages por antiguedad de actualización
-  - Listar pages programadas
-  - Listar pages publicadas
-  - Actualizar page - titulo
-  - Actualizar page - agregar tag
-  - Eliminar page borrador
-  - Eliminar page programada
-  - Eliminar page publicada
+  - Crear page borrador, listarla y eliminarla 
+  - Crear page, programarla, listarla y eliminarla 
+  - Crear page, publicarla, listarla y eliminarla 
+  - Crear tag (name frontera-1), crear page borrador y asociarle el tag, listarla y eliminarla 
+  - Crear tag (name frontera-1), crear page, programarla sin asociarle el tag (debido a bug detectado), listarla y eliminarla
+  - Crear tag (name frontera-1), crear page, publicarla y asociarle el tag, listarla y eliminarla
+  - Crear tag (name frontera), crear page borrador y asociarle el tag, listarla y eliminarla
+  - Crear tag (name frontera), crear page, programarla sin asociarle el tag (debido a bug detectado), listarla y eliminarla
+  - Crear tag (name frontera), crear page, publicarla y asociarle el tag, listarla y eliminarla
+  - Crear tag (name frontera+1), crear page borrador sin asociar el tag que no se pudo crear, listarla y eliminarla
+  - Crear tag (name frontera+1), crear page y programarla sin asociar el tag que no se pudo crear, listarla y eliminarla
+  - Crear tag (name frontera+1), crear page y publicarla sin asociar el tag que no se pudo crear, listarla y eliminarla
+  - Crear tag (description frontera+1), crear page borrador sin asociar el tag que no se pudo crear, listarla y eliminarla
+  - Crear tag (description frontera+1), crear page y programarla sin asociar el tag que no se pudo crear, listarla y eliminarla
+  - Crear tag (description frontera+1), crear page y publicarla sin asociar el tag que no se pudo crear, listarla y eliminarla
+
+- Administración Members
+  - Crear member (name, email y nota con espacios), no es creado 
+  - Crear member (name frontera-1, email y nota con espacios), no es creado
+  - Crear member (name frontera, email y nota con espacios), no es creado
+  - Crear member (name frontera+1, email y nota con espacios), no es creado
+  - Crear member (name con espacio, email no válido frontera-1, nota con espacio), no es creado 
+  - Crear member (name con espacio, email no válido frontera, nota con espacio), no es creado
+  - Crear member (name con espacio, email no válido frontera+1, nota con espacio), no es creado
+  - Crear member (name con espacio, email no válido frontera+X, nota con espacio), no es creado
+  - Crear member (name frontera-1, email no válido frontera+x, nota con espacio), no es creado 
+  - Crear member (name frontera, email no válido frontera+x, nota con espacio), no es creado
+  - Crear member (name frontera+1, email no válido frontera+x, nota con espacio), no es creado
+  - Crear member (name frontera+1, email válido, nota con espacio), no es creado
+
+  - Crear member (name frontera-1, email válido, nota con espacio), es creado y listado 
+  - Crear member (name frontera, email válido, nota con espacio), es creado y listado
+  - Crear member (name frontera-1, email válido, nota con espacio), es creado y listado
+  - Crear member (name frontera, email válido, nota con información), es creado y listado
+
 
 **Intrucciones para instalar y ejecutar pruebas E2E con Cypress**
 
