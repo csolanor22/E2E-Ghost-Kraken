@@ -357,7 +357,7 @@ Un ejemplo de implementación en un escenario de prueba:
 ```
 **Implementación en Kraken**
 
-Con Kraken se crearon 50+ escenarios con pool de datos apriori, haciendo uso de la opción de Scenario Outline. Puede ver ejemplos de la implementación en la carpeta kraken/features/1_crear_admin_negativo.feature
+Con Kraken se crearon 30+ escenarios con pool de datos apriori, haciendo uso de la opción de Scenario Outline. Puede ver ejemplos de la implementación en la carpeta kraken/features/1_crear_admin_negativo.feature
 
 Principalmente se usaron estos datos para pruebas de escenarios negativos. Ejemplo de esto es:
 
