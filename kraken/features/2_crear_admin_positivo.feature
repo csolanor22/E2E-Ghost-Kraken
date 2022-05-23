@@ -1,7 +1,7 @@
 Feature: Crear nuevo usuario admin - escenario positivo
 @user1 @web
 Scenario: Creacion de usuario exitosa
-    Given I navigate to register page "<BASE_URL>"
+    Given I navigate to register page
     And I wait for 2 seconds 
     And I take a screenshot "27"
     When I enter new site title "<NEW_SITE_TITLE>"
