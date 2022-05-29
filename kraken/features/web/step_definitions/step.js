@@ -2,7 +2,6 @@ const {
   Given,
   When,
   Then,
-  Before,
   SnippetsFormatter,
 } = require("@cucumber/cucumber");
 const expect = require("chai").expect;
@@ -10,43 +9,49 @@ const fs = require("fs");
 const { faker } = require('@faker-js/faker');
 
 const {
-  SHORT_VERSION_V3,
-  SHORT_VERSION_V4,
-  BASE_URL,
-  NUMBER,
+  BASE_URL
 } = require("../../../properties.json");
 let dir = "";
 
-Before((scenario) => {
-  let folder = "";
-  if (BASE_URL == "http://localhost:3001") {
-    folder = SHORT_VERSION_V3;
-  } else {
-    folder = SHORT_VERSION_V4;
-  }
-  dir = "./results/" + folder + "/";
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
-
-Then("I take a screenshot {string}", async function (id) {
-  await this.driver.saveScreenshot(dir + "/" + id + ".png");
-});
-
 Given("I navigate to register page", async function () {
-  let loginUrl = "";
-  if (BASE_URL == "http://localhost:3001") {
-    loginUrl = `${BASE_URL}/ghost/#/setup/two`;
-  } else {
-    loginUrl = `${BASE_URL}/ghost/#/setup/`;
-  }
+  let loginUrl = `${BASE_URL}/ghost/#/setup`;
   await this.driver.url(`${loginUrl}`);
+});
+
+When("I enter new site title {kraken-string}", async function (siteTitle) {
+  let element = await this.driver.$('(//input[@id="blog-title"])[1]');
+  return await element.setValue(siteTitle);
+});
+
+
+When("I enter new user fullname {kraken-string}", async function (fullname) {
+  let element = await this.driver.$('(//input[@id="name"])[1]');
+  return await element.setValue(fullname);
+});
+
+When("I enter sign up email {kraken-string}", async function (email) {
+  let element = await this.driver.$('(//input[@id="email"])[1]');
+  return await element.setValue(email);
+});
+
+
+When("I enter new password {kraken-string}", async function (pwd) {
+  let element = await this.driver.$('(//input[@id="password"])[1]');
+  return await element.setValue(pwd);
+});
+
+When("I click signup", async function () {
+  let element = await this.driver.$("(//form/button)[1]");
+  return await element.click();
 });
 
 Given("I navigate to signin page {kraken-string}", async function (baseUrl) {
   let loginUrl = `${baseUrl}/ghost/#/signin`;
   await this.driver.url(`${loginUrl}`);
+});
+
+Then("I take a screenshot {string}", async function (id) {
+  await this.driver.saveScreenshot(dir + "/" + id + ".png");
 });
 
 Then("I navigate to base URL {kraken-string}", async function (baseUrl) {
@@ -263,71 +268,16 @@ When("I click create your account", async function () {
   return await element.click();
 });
 
-When("I enter new site title {kraken-string}", async function (siteTitle) {
-  let element = await this.driver.$('(//input[@id="blog-title"])[1]');
-  return await element.setValue(siteTitle);
-});
-
-When(
-  /^I enter new site title Scenario Outline "([^"]*)"$/,
-  async function (siteTitle) {
-    let element = await this.driver.$('(//input[@id="blog-title"])[1]');
-    return await element.setValue(siteTitle);
-  }
+Then("I except new user success", async function () {
+  let element = await this.driver.$('(//h1[normalize-space()="All done!"])[1]').getText();
+  expect(element).to.equals("All done!");
+}
 );
-
-When("I enter new user fullname {kraken-string}", async function (fullname) {
-  let element = await this.driver.$('(//input[@id="name"])[1]');
-  return await element.setValue(fullname);
-});
-
-When("I enter sign up email {kraken-string}", async function (email) {
-  let element = await this.driver.$('(//input[@id="email"])[1]');
-  return await element.setValue(email);
-});
-
-When("I enter new password {kraken-string}", async function (pwd) {
-  let element = await this.driver.$('(//input[@id="password"])[1]');
-  return await element.setValue(pwd);
-});
-
-When("I click signup", async function () {
-  let element = await this.driver.$("(//form/button)[1]");
-  return await element.click();
-});
-
-When("I click do this later {kraken-string}", async function (baseUrl) {
-  if (baseUrl == "http://localhost:3002") {
-    return;
-  }
-  let element = await this.driver.$(
-    '(//button[normalize-space()="I\'ll do this later, take me to my site!"])[1]'
-  );
-  return await element.click();
-});
 
 Then("I expect error message {kraken-string}", async function (errorMsg) {
   let element = await this.driver.$(`p*=${errorMsg}`).getText();
   expect(element).to.contains(errorMsg);
-  //equals(errorMsg);
 });
-
-Then(
-  "I except new user success {kraken-string} {kraken-string}",
-  async function (myFirstBlog, baseUrl) {
-    if (baseUrl == "http://localhost:3001") {
-      let element = await this.driver
-        .$('(//div[@class="gh-nav-menu-details-blog"])[1]')
-        .getText();
-      expect(element).to.equals(myFirstBlog);
-    } else {
-      let element = await this.driver
-        .$('(//h1[normalize-space()="All done!"])[1]')
-        .getText();
-      expect(element).to.equals("All done!");
-    }
-  }
-);
 
 When("I enter random email", async function () {
   let element = await this.driver.$(".gh-icon-mail > input:nth-child(1)");
@@ -348,85 +298,3 @@ When("I wait an error message", async function () {
   let element = await this.driver.$(".main-error").getText();
   expect(element).not.to.equal(null);
 });
-
-When("I enter random text into field post title max", async function () {
-    let element = await this.driver.$(".gh-editor-title");
-    return await element.setValue(faker.datatype.string(256));
-  }
-);
-
-When("I enter ramdom text into post body max", async function () {
-  let element = await this.driver.$(".__has-no-content > p:nth-child(1)");
-  return await element.setValue(faker.datatype.string(2001));
-}
-);
-
-When("I click span for publish", async function () {
-    let element = await this.driver.$("(//span[normalize-space()='Publish'])[1]");
-    return await element.click();
-});
-
-When("I click Publish Button", async function () {
-  let element = await this.driver.$(".gh-publishmenu-button");
-  return await element.click();
-});
-
-Then("I cant find publish span", async function () {
-  let element = await this.driver.$("(//span[normalize-space()='Publish'])[1]");
-  expect(element).undefined();
-});
-
-
-When("I confirm post publish", async function () {
-  let element = await this.driver.$(".gh-btn-black");
-  return await element.click();
-});
-
-
-When("I click into post title", async function () {
-  let element = await this.driver.$(".gh-editor-title");
-    return element.click();
-});
-
-When("I enter random text into field post title max 255", async function () {
-  let element = await this.driver.$(".gh-editor-title");
-  return await element.setValue(faker.datatype.string(255));
-});
-
-When("I enter random text into field post title max 254", async function () {
-  let element = await this.driver.$(".gh-editor-title");
-  return await element.setValue(faker.datatype.string(254));
-});
-
-When("I click on cancel delete post", async function () {
-  let element = await this.driver.$("div.modal-footer > button:nth-child(1) > span");
-  return await element.setValue(faker.datatype.string(254));
-});
-
-
-When("I click in Pages", async function () {
-  let element = await this.driver.$("ul.gh-nav-list.gh-nav-manage > li:nth-child(2)");
-  return await element.click();
-});
-
-
-When("I click on New Page button", async function () {
-  let element = await this.driver.$("(//span[normalize-space()='New page'])[1]");
-  return await element.click();
-});
-
-When("I click link to return to Page", async function () {
-  let element = await this.driver.$("div.ml3.mobile.flex.items-center > a");
-  return await element.click();
-});
-
-When("I enter ramdom text into page body", async function () {
-  let element = await this.driver.$(".__has-no-content > p:nth-child(1)");
-  return await element.setValue(faker.lorem.paragraphs(10));
-});
-
-When("I enter text into field page title", async function () {
-    let element = await this.driver.$(".gh-editor-title");
-    return await element.setValue(faker.name.firstName());
-  }
-);
