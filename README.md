@@ -99,49 +99,15 @@ Scenario: Creacion de usuario con email inválido
 
 **Funcionalidades y escenarios**
 
-- Ingresar a la aplicacion:
-
-  - Login exitoso y Logout
-  - Login erroneo por password incorrecto
-  - Login erroneo por username inexistente en DB
-  - Login sin usuario
-  - Login sin contraseña
-  - Login con formato de usuario no valido
-
 - Administración Post
 
-  - Crear post borrador con titulo y contenido valido (datos aleatorios)
-  - Crear post borrador con titulo de 1 caracter y descripción (datos aleatorios)
-  - Crear post borrador con titulo de 2 caracteres y descripcion (datos aleatorios)
-  - Crear post sin titulo y con descripcion (datos aleatorios)
-  - Crear post sin titulo y sin descripcion (datos fijos)
-  - Crear post titulo de 254 caracteres (datos aleatorios)
-  - Crear post titulo de 255 caracteres (datos aleatorios)
-  - Crear post titulo de 300 caracteres (datos aleatorios)
-  - Crear post insertando data generada de imagenes en titulo y contenido (datos aleatorios)
-  - Crear post insertando data generada de música en titulo y contenido (datos aleatorios)
   - Creacion de post borrador, listar y eliminar (datos aleatorios)
   - Creación de post programado, listar y eliminar (datos aleatorios)
   - Creación de post, publicarlo, listarlo y eliminar (datos aleatorios)
-  - Creación de tag (frontera-1), post borrador, listarlo y eliminarlo (Pool datos)
-  - Creación de tag (frontera-1), post programado, listarlo y eliminarlo (Pool datos)
-  - Creación de tag (frontera-1), post, ´publicarlo, listarlo y eliminarlo (Pool datos)
-  - Creación de tag (frontera), post borrador, listarlo y eliminarlo (Pool datos)
-  - Creación de tag (frontera), post programado, listarlo y eliminarlo (Pool datos)
-  - Creación de tag (frontera), post, ´publicarlo, listarlo y eliminarlo (Pool datos)
-
+   
 - Tags
 
-  - Crear tag menos de 190 caracteres (Data Pool)
-  - Crear tag con 190 caracteres (Data pool)
-  - Crear tag con 191 caracteres (Data Pool)
-  - Crear tag con mas de 191 caracteres (Data Pool)
-  - Crear tag con 1 caracter (Data pool)
-  - Crear tag con 2 caracteres (Data pool)
-  - Crear tag sin titulo pero con descripcion (Data Pool)
-  - Crear tag con descripción menor a 500 caracteres (Data Pool)
-  - Crear tag con descripción igual a 500 caracteres (Data pool)
-  - Crear tag con más de 500 caracteres (Data Pool)
+  - Crear tag menos de 190 caracteres (datos aleatorios)
 
 - Administración Pages
   - Crear page borrador, listarla y eliminarla 
@@ -150,34 +116,7 @@ Scenario: Creacion de usuario con email inválido
   - Crear tag (name frontera-1), crear page borrador y asociarle el tag, listarla y eliminarla 
   - Crear tag (name frontera-1), crear page, programarla sin asociarle el tag (debido a bug detectado), listarla y eliminarla
   - Crear tag (name frontera-1), crear page, publicarla y asociarle el tag, listarla y eliminarla
-  - Crear tag (name frontera), crear page borrador y asociarle el tag, listarla y eliminarla
-  - Crear tag (name frontera), crear page, programarla sin asociarle el tag (debido a bug detectado), listarla y eliminarla
-  - Crear tag (name frontera), crear page, publicarla y asociarle el tag, listarla y eliminarla
-  - Crear tag (name frontera+1), crear page borrador sin asociar el tag que no se pudo crear, listarla y eliminarla
-  - Crear tag (name frontera+1), crear page y programarla sin asociar el tag que no se pudo crear, listarla y eliminarla
-  - Crear tag (name frontera+1), crear page y publicarla sin asociar el tag que no se pudo crear, listarla y eliminarla
-  - Crear tag (description frontera+1), crear page borrador sin asociar el tag que no se pudo crear, listarla y eliminarla
-  - Crear tag (description frontera+1), crear page y programarla sin asociar el tag que no se pudo crear, listarla y eliminarla
-  - Crear tag (description frontera+1), crear page y publicarla sin asociar el tag que no se pudo crear, listarla y eliminarla
-
-- Administración Members
-  - Crear member (name, email y nota con espacios), no es creado 
-  - Crear member (name frontera-1, email y nota con espacios), no es creado
-  - Crear member (name frontera, email y nota con espacios), no es creado
-  - Crear member (name frontera+1, email y nota con espacios), no es creado
-  - Crear member (name con espacio, email no válido frontera-1, nota con espacio), no es creado 
-  - Crear member (name con espacio, email no válido frontera, nota con espacio), no es creado
-  - Crear member (name con espacio, email no válido frontera+1, nota con espacio), no es creado
-  - Crear member (name con espacio, email no válido frontera+X, nota con espacio), no es creado
-  - Crear member (name frontera-1, email no válido frontera+x, nota con espacio), no es creado 
-  - Crear member (name frontera, email no válido frontera+x, nota con espacio), no es creado
-  - Crear member (name frontera+1, email no válido frontera+x, nota con espacio), no es creado
-  - Crear member (name frontera+1, email válido, nota con espacio), no es creado
-
-  - Crear member (name frontera-1, email válido, nota con espacio), es creado y listado 
-  - Crear member (name frontera, email válido, nota con espacio), es creado y listado
-  - Crear member (name frontera-1, email válido, nota con espacio), es creado y listado
-  - Crear member (name frontera, email válido, nota con información), es creado y listado
+  
 
 
 **Intrucciones para instalar y ejecutar pruebas E2E con Cypress**
