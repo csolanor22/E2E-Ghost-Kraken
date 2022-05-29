@@ -9,7 +9,7 @@ Integrantes:
 
 ## Estrategia de pruebas
 
-Documento de estrategia de pruebas: https://drive.google.com/file/d/1ELHCigz3cghzKsjhOKM8OZEcUA6leMOL/view?usp=sharing
+Documento de estrategia de pruebas: [https://drive.google.com/file/d/1ELHCigz3cghzKsjhOKM8OZEcUA6leMOL/view?usp=sharing](https://drive.google.com/file/d/1dWYTsRR_Bd1P-kwG9gkAYwRvjjlShRmf/view?usp=sharing)
 
 ### Descripción de estrategia de pruebas
 [![Video de descripcion estrategia de pruebas](http://img.youtube.com/vi/0DMyQ-A0SPQ/0.jpg)](http://www.youtube.com/watch?v=0DMyQ-A0SPQ "Descripción estrategia de pruebas")
