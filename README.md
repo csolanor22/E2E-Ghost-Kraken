@@ -13,7 +13,7 @@ La pruebas manuales exploratorias y de reconocimiento de la ABP(Aplicación Bajo
 
 ## Reporte de Incidencias
 
-Los defectos o incidencias encontradas se reportaron en el isstema de Issues de este mismo repositorio.
+Los defectos o incidencias encontradas se reportaron en el isstema de Issues de este mismo repositorio. https://github.com/csolanor22/E2E-Ghost-Kraken/issues
 
 ## Ghost
 
