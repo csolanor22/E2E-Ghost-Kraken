@@ -7,6 +7,14 @@ Integrantes:
 - CESAR ALFONSO SOLANO RUIZ (c.solanor@uniandes.edu.co)
 - ANA LUCIA FORERO NEME (a.foreron@uniandes.edu.co)
 
+## Inventario de pruebas manuales exploratorias
+
+La pruebas manuales exploratorias y de reconocimiento de la ABP(Aplicación Bajo Pruebas) se documentaron en el formato de Inventario Pruebas Exploratorias, disponible en la raíz del proyecto. Descargalo aquí ->  https://github.com/csolanor22/E2E-Ghost-Kraken/raw/main/Inventario%20Pruebas%20Exploratorias.xlsx
+
+## Reporte de Incidencias
+
+Los defectos o incidencias encontradas se reportaron en el isstema de Issues de este mismo repositorio.
+
 ## Ghost
 
 **Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3 usando contenedores de Docker**
