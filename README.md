@@ -15,6 +15,9 @@ La pruebas manuales exploratorias y de reconocimiento de la ABP(Aplicación Bajo
 
 Los defectos o incidencias encontradas se reportaron en el isstema de Issues de este mismo repositorio. https://github.com/csolanor22/E2E-Ghost-Kraken/issues
 
+## Pros y Contras de las herramientas usadas en la primera semana de implementación
+Encuentra en la Wiki de este repo los Pros y Contras de Cypress y Kraken -> https://github.com/csolanor22/E2E-Ghost-Kraken/wiki
+
 ## Ghost
 
 **Intrucciones para instalar las versiones de Ghost 3.41.1 y 4.41.3 usando contenedores de Docker**
